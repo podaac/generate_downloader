@@ -1,0 +1,54 @@
+################################################################################
+#
+# This file contains environment variables for running the Downloader component
+# in the Generate Program.
+#
+################################################################################
+
+# Set environment for sigevent manager to handle errors and notifications.
+setenv GHRSST_SIGEVENT_URL http://test.test.test:8080
+setenv OPS_MODIS_MONITOR_EMAIL_LIST "test.test@jpl.nasa.gov"
+setenv OPSMAILSRC                   "test.test@jpl.nasa.gov"
+
+# Path to log file.
+setenv OBPG_DOWNLOADER_LOGGING /data/logs    # NET edit. (Docker container)
+
+# Scratch directory to store temporary files and registry.
+setenv SCRATCH_AREA         /data/scratch    # NET edit. (Docker container)
+
+# Download error counts location
+setenv DOWNLOAD_ERROR_COUNTS_LOCATION /data/scratch/counts    # NET edit. (Docker container)
+
+# OBPG Downloader Python code
+setenv OBPG_RUNENV_PYTHON_HOME /app/python    # NET edit. (Docker container)
+
+# Location of Python3 executable
+setenv PYTHON3_EXECUTABLE_PATH /app/env/bin/python3    # NET edit. (Docker container)
+
+# Failded download error count threshold 
+setenv OBPG_RUNENV_ERROR_COUNT_THRESHOLD 5
+
+# Files batches for downloading
+setenv OBPG_RUNENV_MAX_SIMULTANEOUS_SUB_PROCESSES_TO_RUN 1
+setenv OBPG_RUNENV_PRINT_BATCHES_CONTENT_ONLY_TEST false
+
+# Parallel processing
+setenv OBPG_RUNENV_MAX_NUM_SECONDS_IN_BETWEEN_SUBPROCESS_START 0
+setenv OBPG_RUNENV_USE_PARALLEL_PROCESSING false
+setenv OBPG_RUNENV_USE_PIPE_FLAG false
+
+# NFS file lock
+setenv CRAWLER_SEARCH_MAX_FILE_LOCK_ATTEMPTS 20
+setenv CRAWLER_SEARCH_MAX_LOCK_LIFETIME 65
+
+# Test run indicator with dates
+setenv TEST_RUN true
+setenv THE_YEAR 2022
+setenv THE_MONTH 03
+setenv THE_DAY 22
+setenv YESTERDAY_YEAR 2022
+setenv YESTERDAY_MONTH 03
+setenv YESTERDAY_DAY 21
+
+# Tracking unknown
+# setenv OBPG_RUNENV_RESOURCES_HOME /usr/local/daac/obpg/resources    # NET edit. (Used for testing?)
