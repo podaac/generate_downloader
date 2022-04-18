@@ -141,7 +141,8 @@ def preparation_for_downloader(i_one_line,
     if (not os.path.exists(destination_output_directory)):
         try:
             print(debug_module + "create directory" + destination_output_directory);
-            os.makedirs(destination_output_directory)
+            os.umask(000)
+            os.makedirs(destination_output_directory, 0o777)    # NET edit. (Allow removal of directory on disk)
         except OSError as exception:
             print(debug_module + "WARN: Cannot create directory" + destination_output_directory);
             # For now, we don't do anything but print a WARNING.
@@ -160,7 +161,8 @@ def preparation_for_downloader(i_one_line,
     if (not os.path.exists(hidden_download_directory)):
         try:
             print(debug_module + "create directory " + hidden_download_directory);
-            os.makedirs(hidden_download_directory)
+            os.umask(000)
+            os.makedirs(hidden_download_directory, 0o777)    # NET edit. (Allow removal of directory on disk)
         except OSError as exception:
             print(debug_module + "WARN: Cannot create directory" + hidden_download_directory);
             # For now, we don't do anything but print a WARNING.

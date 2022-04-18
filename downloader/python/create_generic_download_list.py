@@ -782,7 +782,8 @@ def create_generic_download_list(search_dtype,       # L2
         # Check if directory exists.  If not, create it.
         if (not os.path.isdir(CRAWLER_DEFAULT_OUTPUT_DIRECTORY)):
             print(g_module_name, 'DIR_CREATE',CRAWLER_DEFAULT_OUTPUT_DIRECTORY);
-            os.mkdir(CRAWLER_DEFAULT_OUTPUT_DIRECTORY);
+            os.umask(000)
+            os.mkdir(CRAWLER_DEFAULT_OUTPUT_DIRECTORY, 0o777)    # NET edit. (Allow removal of directory on disk)
 
     # Fetch the content from the query.
 

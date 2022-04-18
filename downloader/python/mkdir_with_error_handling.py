@@ -48,7 +48,8 @@ def mkdir_with_error_handling(i_directory_to_create):
 
     status_mkdir = 1;
     try:
-        os.mkdir(i_directory_to_create);
+        os.umask(000)
+        os.mkdir(i_directory_to_create, 0o777)    # NET edit. (Allow removal of directory on disk)
     except OSError:
         log_this("ERROR",g_routine_name,"CANNOT_CREATE_DIRECTORY "  + i_directory_to_create);
         status_mkdir = 0;

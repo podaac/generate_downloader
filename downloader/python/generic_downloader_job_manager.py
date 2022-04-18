@@ -150,7 +150,8 @@ class generic_downloader_job_manager:
         if not os.path.isdir(destination_output_directory):
             print(debug_module + "mkdir " + destination_output_directory);
             # subprocess.call(["mkdir",destination_output_directory]);
-            os.mkdir(destination_output_directory)
+            os.umask(000)
+            os.mkdir(destination_output_directory, 0o777)    # NET edit. (Allow removal of directory on disk)
 
         hidden_download_directory = destination_output_directory + "/.registry";
 
@@ -158,7 +159,8 @@ class generic_downloader_job_manager:
         if not os.path.isdir(hidden_download_directory):
             print(debug_module + "mkdir " + hidden_download_directory);
             # subprocess.call(["mkdir",hidden_download_directory]);
-            os.mkdir(hidden_download_directory)
+            os.umask(000)
+            os.mkdir(hidden_download_directory, 0o777)    # NET edit. (Allow removal of directory on disk)
 
 
         o_location_of_registry_file = hidden_download_directory + "/" + filename_only;
@@ -225,7 +227,8 @@ class generic_downloader_job_manager:
         # Create directory if it does not exist yet
         if not os.path.isdir(hidden_download_directory):
             # subprocess.call(["mkdir",hidden_download_directory]);
-            os.mkdir(hidden_download_directory)
+            os.umask(000)
+            os.mkdir(hidden_download_directory, 0o777)    # NET edit. (Allow removal of directory on disk)
 
         o_location_of_registry_file = hidden_download_directory + "/" + filename_only;
         if (os.path.isfile(o_location_of_registry_file)):

@@ -79,8 +79,8 @@ def httpdl(https_server_request, localpath='.', outputfilename=None, ntries=5,
             status = 401
         else:
             if not os.path.exists(localpath):
-                os.umask(0o02)
-                os.makedirs(localpath, mode=0o2775)
+                os.umask(000)
+                os.makedirs(localpath, 0o777)    # NET edit. (Allow removal of directory on disk)
 
             if not outputfilename:
                 cd = req.headers.get('Content-Disposition')

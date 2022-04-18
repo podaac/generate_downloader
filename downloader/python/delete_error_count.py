@@ -34,7 +34,8 @@ def delete_error_count(i_full_pathname):
     if (not os.path.exists(scratch_count_directory)):
         try:
             print(debug_module + "create directory " + scratch_count_directory);
-            os.makedirs(scratch_count_directory);
+            os.umask(000)
+            os.makedirs(scratch_count_directory, 0o777)    # NET edit. (Allow removal of directory on disk)
         except OSError as exception:
             print(debug_module + "WARN: Cannot create directory" + scratch_count_directory);
 
@@ -42,7 +43,8 @@ def delete_error_count(i_full_pathname):
     if (not os.path.exists(error_count_directory)):
         try:
             print(debug_module + "create directory " + error_count_directory);
-            os.makedirs(error_count_directory);
+            os.umask(000)
+            os.makedirs(error_count_directory, 0o777)    # NET edit. (Allow removal of directory on disk)
         except OSError as exception:
             print(debug_module + "WARN: Cannot create directory" + error_count_directory);
 

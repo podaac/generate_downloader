@@ -23,7 +23,6 @@
 # Set the environments.
 
 # source $HOME/define_modis_operation_environment_for_combiner
-# source /home/tebaldi/generate/workspace/downloader/config/downloader_config    # NET edit. (Testing)
 source /app/config/downloader_config    # NET edit. (Docker container)
 
 # Get the input.
@@ -335,6 +334,7 @@ foreach file_list_to_download (`cat $total_temporary_list_filename`)
     # setenv JOB_DIRECTORY $HOME/scratch/viirs_level2_download_processes
     if (! -e $JOB_DIRECTORY) then
         mkdir -p $JOB_DIRECTORY
+        chmod 777 $JOB_DIRECTORY    # NET edit. (Allow removal of directory on disk)
     endif
 
     # Write a file to signify that the a job has been started.
