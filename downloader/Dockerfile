@@ -1,7 +1,7 @@
 # Stage 0 - Create from Python 3.10-alpine3.15 image
 # FROM python:3.10-alpine3.15 as stage0
-FROM python:3.10-alpine3.15
-RUN apk add --no-cache --upgrade bash tcsh python3-dev linux-headers gcc musl-dev
+FROM python:3.10-slim-buster
+RUN apt update && apt install -y bash tcsh python3-venv build-essential netcdf-bin procps
 
 # Stage 1 - Copy Generate code
 # FROM stage0 as stage1
