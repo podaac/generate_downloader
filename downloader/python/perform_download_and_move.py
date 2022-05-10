@@ -31,6 +31,7 @@
 import os
 import time
 import sys
+from mkdir_with_error_handling import mkdir_with_error_handling
 
 from log_this import log_this;
 from perform_download_only import perform_download_only;
@@ -107,15 +108,21 @@ def perform_download_and_move(i_num_files_downloaded,
             print(debug_module + "file_name_to_get_checksum_for",file_name_to_get_checksum_for); 
             print(debug_module + "i_checksum_value",i_checksum_value); 
 
-        o_download_and_move_status = perform_checksum_check_and_move(i_final_location_of_downloaded_file,
-                                                                     i_temporary_location_of_downloaded_file,
-                                                                     i_perform_checksum_flag,
-                                                                     file_name_to_get_checksum_for,
-                                                                     i_checksum_value);
-        time_end_move = time.time();
-        time_spent_in_move = time_end_move - time_start_move;
-        if (debug_mode):
-            print(debug_module + "time_spent_in_move ", time_spent_in_move," FILE_MOVE_FROM ", i_temporary_location_of_downloaded_file, " FILE_MOVE_TO ", i_final_location_of_downloaded_file);
+        # Determine final location based on whether file is quicklook or refined.
+        p_flag = settings.g_gdjm.is_file_quicklook_or_refined(f"{i_temporary_location_of_downloaded_file}/{file_name_to_get_checksum_for}")
+        i_final_location_of_downloaded_file = f"{directory_only}_{p_flag}/{file_name_to_get_checksum_for}"
+        o_download_and_move_status = mkdir_with_error_handling(os.path.dirname(i_final_location_of_downloaded_file))
+
+        if (o_download_and_move_status):   # Status equals 1
+            o_download_and_move_status = perform_checksum_check_and_move(i_final_location_of_downloaded_file,
+                                                                        i_temporary_location_of_downloaded_file,
+                                                                        i_perform_checksum_flag,
+                                                                        file_name_to_get_checksum_for,
+                                                                        i_checksum_value);
+            time_end_move = time.time();
+            time_spent_in_move = time_end_move - time_start_move;
+            if (debug_mode):
+                print(debug_module + "time_spent_in_move ", time_spent_in_move," FILE_MOVE_FROM ", i_temporary_location_of_downloaded_file, " FILE_MOVE_TO ", i_final_location_of_downloaded_file);
         
     else:
         o_download_and_move_status = 0;

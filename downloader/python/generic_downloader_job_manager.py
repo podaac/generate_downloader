@@ -8,15 +8,16 @@
 
 # This class module allows the handling of job registry/removal of the generic downloader module.
 
+from netCDF4 import Dataset
+
 import os
 import subprocess
 import time
+from time import gmtime, strftime;
 import sys
 
-from time import gmtime, strftime;
 
 from log_this import log_this;
-
 from const import CONST_MAX_AGE_BEFORE_CONSIDERED_STALE, CONST_MAX_WAIT_DURATION_BETWEEN_CHECKS;
 
 class generic_downloader_job_manager:
@@ -99,6 +100,29 @@ class generic_downloader_job_manager:
 
         o_download_sub_directory = self.get_output_sub_directory_name(i_processing_level,i_processing_type) + "/.hidden";
         return(o_download_sub_directory);
+
+    #------------------------------------------------------------------------------------------------------------------------
+    def is_file_quicklook_or_refined(self, nc_file):
+        # Determines if the file is quicklook or refined and returns a string that indicates this.
+        #
+        # Parameters:
+        # nc_file: string
+        #    Path to nc_file to check for processing version
+        #
+        # Returns:
+        #     Either "QUICKLOOK" or "REFINED"
+
+        nc_ds = Dataset(nc_file)
+        processing_version = nc_ds.processing_version
+        product_name = nc_ds.product_name
+        nc_ds.close()
+
+        if ("QL" in processing_version) or (".NRT" in product_name):
+            p_flag = "QUICKLOOK"
+        else:
+            p_flag = "REFINED"
+        
+        return p_flag
 
     #------------------------------------------------------------------------------------------------------------------------
     # Function register a given job by creating an empty file in the .registry directory.  This allow us later to check to see that the file
