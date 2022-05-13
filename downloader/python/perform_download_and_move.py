@@ -136,7 +136,7 @@ def perform_download_and_move(i_num_files_downloaded,
     time_end_download_and_move = time.time();
     o_time_spent_in_downloading_and_move = i_time_spent_in_downloading + (time_end_download_and_move - time_start_download_and_move);
 
-    return(o_download_and_move_status,o_time_spent_in_downloading_and_move);
+    return(o_download_and_move_status,o_time_spent_in_downloading_and_move,i_final_location_of_downloaded_file);
 
 import settings
 

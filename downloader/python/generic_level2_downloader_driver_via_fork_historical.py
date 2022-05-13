@@ -210,7 +210,7 @@ def generic_level2_downloader_driver_via_fork_historical(i_pipe_writer,
                 download_status = 1;
                 time_spent_in_downloading = 0.0;
             else:
-                 (download_status, time_spent_in_downloading) = perform_download_and_move(num_files_downloaded,
+                 (download_status, time_spent_in_downloading, final_location_of_downloaded_file) = perform_download_and_move(num_files_downloaded,
                                                                                           num_sst_sst4_files,
                                                                                           full_pathname_to_download,
                                                                                           temporary_location_of_downloaded_file,
