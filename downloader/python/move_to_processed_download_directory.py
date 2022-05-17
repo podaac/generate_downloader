@@ -106,7 +106,7 @@ def move_to_processed_download_directory(i_processing_type,
 
         sigevent_type     = 'ERROR'
         sigevent_description = "FILE_MOVE_FAILED_FILE_DOES_NOT_EXIST " + i_filename_to_move;
-        sigevent_category = 'UNCATEGORIZED'
+        sigevent_category = 'GENERATE'
         sigevent_data        = "";
         sigevent_debug_flag  = None;
 

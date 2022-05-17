@@ -90,7 +90,7 @@ if __name__ == "__main__":
     sigevent_provider      = "JPL";
     sigevent_source        = "GHRSST-PROCESSING";
     sigevent_type          = "INFO";
-    sigevent_category      = 'UNCATEGORIZED';
+    sigevent_category      = 'GENERATE';
     sigevent_description   = "This is sigevent_description";
     sigevent_data          = "This is sigevent_data";
 

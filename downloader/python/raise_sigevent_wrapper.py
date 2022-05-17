@@ -51,7 +51,7 @@ if __name__ == '__main__':
         debug_mode   = 1;
 
     sigevent_type     = 'INFO'
-    sigevent_category = 'UNCATEGORIZED'
+    sigevent_category = 'GENERATE'
     sigevent_description = 'SIGEVENT_DESCRIPTION';
     sigevent_data        = 'SIGEVENT_DATA';
     sigevent_debug_flag  = 1;

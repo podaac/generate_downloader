@@ -111,10 +111,10 @@ def generic_level2_downloader_driver_via_fork_historical(i_pipe_writer,
     sigevent_source = "GHRSST-PROCESSING";
 
     if (sigevent_url == ''):
-        print("You must defined the sigevent URL: i.e. setenv GHRSST_SIGEVENT_URL http://lanina.jpl.nasa.gov:8100"); 
+        print("You must defined the sigevent URL: i.e. setenv GHRSST_SIGEVENT_URL http://test.jpl.nasa.gov:8080"); 
         exit(0);
 
-    sigevent_clause = "SIGEVENT=" + sigevent_url + "&category=UNCATEGORIZED&provider=jpl";
+    sigevent_clause = "SIGEVENT=" + sigevent_url + "&category=GENERATE&provider=jpl";
     temp_dir = "/tmp/";
     msg2report = 7;
     sigevent_data = '';

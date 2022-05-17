@@ -30,7 +30,7 @@ def file_move_with_error_handling(i_filename_to_move,
         o_move_status = 0;
 
         sigevent_type     = 'ERROR'
-        sigevent_category = 'UNCATEGORIZED'
+        sigevent_category = 'GENERATE'
         sigevent_description = "FILE_MOVE_FAILED_SOURCE_FILE_DOES_NOT_EXIST " + i_filename_to_move;
         sigevent_data        = "";
         sigevent_debug_flag  = None;
@@ -58,7 +58,7 @@ def file_move_with_error_handling(i_filename_to_move,
         o_move_status = 0;
 
         sigevent_type     = 'ERROR';
-        sigevent_category = 'UNCATEGORIZED';
+        sigevent_category = 'GENERATE';
         sigevent_description = "FILE_MOVE_FAILED_OUTPUT_DIRECTORY_DOES_NOT_EXIST [" + i_destination_name + "]";
         sigevent_data        = "";
         sigevent_debug_flag  = None;
@@ -103,7 +103,7 @@ def file_move_with_error_handling(i_filename_to_move,
         # Notify operator and return.
 
         sigevent_type     = 'ERROR'
-        sigevent_category = 'UNCATEGORIZED'
+        sigevent_category = 'GENERATE'
         sigevent_description = "FILE_MOVE_FAILED FROM " + i_filename_to_move + " TO " + i_destination_name;
         sigevent_data        = "";
         sigevent_debug_flag  = None;

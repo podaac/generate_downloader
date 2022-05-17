@@ -67,7 +67,7 @@ def mkdir_with_error_handling(i_directory_to_create):
             print(debug_module + "raise_sigevent");
 
         sigevent_type     = 'ERROR'
-        sigevent_category = 'UNCATEGORIZED'
+        sigevent_category = 'GENERATE'
         sigevent_description = debug_module + "MKDIR_FAILED " + i_directory_to_create;
         sigevent_data        = "";
         sigevent_debug_flag  = None;

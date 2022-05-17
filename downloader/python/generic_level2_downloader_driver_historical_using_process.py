@@ -97,7 +97,7 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
     sigevent_url = os.getenv('GHRSST_SIGEVENT_URL','');
     sigevent_source = "GHRSST-PROCESSING";
     if (sigevent_url == ''):
-        print("You must defined the sigevent URL: i.e. setenv GHRSST_SIGEVENT_URL http://lanina.jpl.nasa.gov:8100"); 
+        print("You must defined the sigevent URL: i.e. setenv GHRSST_SIGEVENT_URL http://test.jpl.nasa.gov:8100"); 
         sys.exit(0);
 
     # Time related variables used to keep track of how long things take.
@@ -590,7 +590,7 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
         # Some variables related to sigevent.
 
         sigevent_type = "ERROR";
-        sigevent_category = "UNCATEGORIZED";
+        sigevent_category = "GENERATE";
         sigevent_description = "MONITOR_JOB_COMPLETION:FAILED_SOME_DOWNLOAD_JOBS_MAY_NOT_COMPLETE_YET NUM_INCOMPLETE_JOBS " + str(o_num_incompleted_jobs) + " OUT_OF " + str(num_filenames_dispatched_for_download_total) + " o_total_seconds_waited " + str(o_total_seconds_waited); 
         sigevent_data = "Please inspect directory " + o_hidden_download_directory + " for stale file associated with a download.";
         sigevent_debug_flag = None;
