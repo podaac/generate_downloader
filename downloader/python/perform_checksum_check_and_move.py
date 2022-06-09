@@ -122,6 +122,10 @@ def perform_checksum_check_and_move(i_final_location_of_downloaded_file,
         if (debug_mode):
             print(debug_module + "time_spent_in_file_move ",time_spent_in_file_move);
 
+        # Rename final output file to exclude NRT token if present
+        if ".NRT" in i_final_location_of_downloaded_file:
+            os.rename(i_final_location_of_downloaded_file, i_final_location_of_downloaded_file.replace(".NRT", ""))
+
 #        # Remove the lock if exist.
 
     else:
