@@ -91,7 +91,8 @@ set log_top_level_directory = $logging_dir    # NET edit.
 
 # Note: This date is to be Pacific Time.
 setenv TZ PST8PDT
-set today_date = `date '+%m_%d_%y_%H_%M'`
+set random_number = `bash -c 'echo $RANDOM'`
+set today_date = "`date '+%m_%d_%y_%H_%M'`_$random_number"    # Use random number to differentiate parallel runs
 
 # For each name found in the given particular directory, we run the Perl script as a separate background process sending out to unique log file.
 
