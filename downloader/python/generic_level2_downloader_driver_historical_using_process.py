@@ -22,6 +22,7 @@
 import datetime
 import math
 import os
+import random
 import re
 import sys
 import time
@@ -821,6 +822,7 @@ def register_jobs_in_batch_via_file(i_scratch_area,
     name_count=0;
     
     t0 = time.time();
+    rand_int = random.randint(1, 1000)
     for one_line in i_batch_of_lines_to_download:
         name_count = name_count + 1;
         one_line = one_line.rstrip('\n');
@@ -830,7 +832,8 @@ def register_jobs_in_batch_via_file(i_scratch_area,
         donotcare = write_child_file_for_interprocess_communication(i_scratch_area,
                                                                     i_processing_level,
                                                                     i_processing_type,
-                                                                    one_line);
+                                                                    one_line,
+                                                                    rand_int);
         # Register the job by creating an empty file on the file system in the .hidden directory.
 
         (o_register_status,o_temporary_location_of_downloaded_file) = settings.g_gdjm.register_this_job(one_line,

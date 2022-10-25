@@ -9,13 +9,13 @@
 # File contains utilities to write/read snippet of info to file for communication between processes.
 
 import os;
-import random
 import time;
 
 #------------------------------------------------------------------------------------------------------------------------
 def get_filename_for_interprocess_communication(i_scratch_area,
                                                 i_processing_level,
-                                                i_processing_type):
+                                                i_processing_type,
+                                                rand_int):
 
     debug_module = "get_filename_for_interprocess_communication:";
     debug_mode   = 0;
@@ -23,7 +23,7 @@ def get_filename_for_interprocess_communication(i_scratch_area,
     global g_filename_for_interprocess_communication;
     g_filename_for_interprocess_communication = None;
 
-    o_filename_for_interprocess_communication = i_scratch_area.rstrip("/") + "/" + "run_report_for_interprocess_communication_for_processing_level_" + str(i_processing_level) + "_processing_type_" + i_processing_type + "_" + str(random.randint(1, 1000)) + '.txt';
+    o_filename_for_interprocess_communication = i_scratch_area.rstrip("/") + "/" + "run_report_for_interprocess_communication_for_processing_level_" + str(i_processing_level) + "_processing_type_" + i_processing_type + "_" + str(rand_int) + '.txt';
     # Update our global name if we haven't yet.
     if (g_filename_for_interprocess_communication is None):
         g_filename_for_interprocess_communication = o_filename_for_interprocess_communication;
@@ -49,13 +49,14 @@ def delete_file_for_interprocess_communication():
 def write_child_file_for_interprocess_communication(i_scratch_area,
                                                     i_processing_level,
                                                     i_processing_type,
-                                                    i_message):
+                                                    i_message,
+                                                    rand_int):
     # Function write a message with a carriage return to new file.
 
     debug_module = "write_child_file_for_interprocess_communication:";
     debug_mode   = 0;
 
-    filename_for_interprocess_communication = get_filename_for_interprocess_communication(i_scratch_area,i_processing_level,i_processing_type);
+    filename_for_interprocess_communication = get_filename_for_interprocess_communication(i_scratch_area,i_processing_level,i_processing_type,rand_int);
 
     # It is possible to fail to open the file for writing.  We will make several attempts to open the file.
 
