@@ -70,7 +70,7 @@ def httpdl(https_server_request, localpath='.', outputfilename=None, ntries=5,
     getSession(verbose=verbose, ntries=ntries)
 
     with dnldSession.get(https_server_request, stream=True, timeout=timeout) as req:
-        
+        print(f"DOWNLOAD REQUEST: {req} and {req.headers}")
         req.raise_for_status()
         ctype = req.headers.get('Content-Type')
         if req.status_code in (400, 401, 403, 404, 416):
