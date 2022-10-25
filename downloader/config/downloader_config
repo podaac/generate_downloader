@@ -40,7 +40,7 @@ setenv CRAWLER_SEARCH_MAX_FILE_LOCK_ATTEMPTS 20
 setenv CRAWLER_SEARCH_MAX_LOCK_LIFETIME 65
 
 # Test run indicator with dates
-setenv TEST_RUN true
+setenv TEST_RUN false
 setenv THE_YEAR 2022
 setenv THE_MONTH 03
 setenv THE_DAY 22

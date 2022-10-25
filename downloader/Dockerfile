@@ -1,7 +1,7 @@
 # Stage 0 - Create from Python 3.10-alpine3.15 image
 # FROM python:3.10-alpine3.15 as stage0
 FROM python:3.10-slim-buster
-RUN apt update && apt install -y bash tcsh python3-venv build-essential netcdf-bin procps
+RUN apt update && apt install -y bash tcsh python3-venv build-essential netcdf-bin procps jq
 
 # Stage 1 - Copy Generate code
 # FROM stage0 as stage1
@@ -26,4 +26,4 @@ RUN /bin/rm /app/create_netrc.sh
 # FROM stage3 as stage4
 LABEL version="0.1" \
     description="Containerized Generate: Downloader"
-ENTRYPOINT [ "/bin/tcsh", "/app/shell/startup_generic_downloader.csh" ] 
+ENTRYPOINT [ "/bin/tcsh", "/app/shell/startup_generic_downloader_job_index.csh" ] 
