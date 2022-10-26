@@ -182,9 +182,11 @@ def read_master_file_for_interprocess_communication(i_scratch_area,
         f.close();
         if (debug_mode):
             array_size = len(o_run_log_array);
-            print(debug_module + "FILENAME_FOR_INTERPROCESS_COMMUNICATION " + filename_for_interprocess_communication + " ARRAY_SIZE " + str(array_size));
+            print(debug_module + "FILENAME_FOR_INTERPROCESS_COMMUNICATION " + g_filename_for_interprocess_communication + " ARRAY_SIZE " + str(array_size));
+    except FileNotFoundError:
+        print("WARN",debug_module + "WARN:CANNOT_FIND_FILE" + g_filename_for_interprocess_communication)
     except IOError:
-        print("INFO",debug_module + "WARN:CANNOT_OPEN_FILE " + filename_for_interprocess_communication + " ATTEMPTS_MADE " + str(o_attempts_made));
+        print("INFO",debug_module + "WARN:CANNOT_OPEN_FILE " + g_filename_for_interprocess_communication);
 
     return (o_run_log_array);
 
