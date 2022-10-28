@@ -17,13 +17,26 @@ The script `netrc_env_vars.sh` found in the top-level `generate` directory can b
 
 ## execute command
 
+Arguments:
+1.	list_directory
+2.	job_index
+3.	processing_level
+4.	separator_character
+5.	processing_type
+6.	top_level_output_directory
+7.	num_files_to_download
+8.	sleep_time_in_between_files
+9.	move_filelist_file_when_done
+10.	perform_checksum_flag
+11.	test_run_flag
+
 MODIS A: 
-`docker run --name gen-test -v /downloader/input:/data/input -v /downloader/logs:/data/logs -v /downloader/output:/data/output -v /downloader/scratch:/data/scratch downloader:0.1 /data/input L2 SPACE MODIS_A /data/output 1000 1 1 yes yes`
+`docker run --name gen-test -v /downloader/input:/data/input -v /downloader/logs:/data/logs -v /downloader/output:/data/output -v /downloader/scratch:/data/scratch downloader:0.1 /data/lists 0 L2 SPACE MODIS_A /data/output 5 1 yes yess`
 
 MODIS T: 
-`docker run --name gen-test -v /downloader/input:/data/input -v /downloader/logs:/data/logs -v /downloader/output:/data/output -v /downloader/scratch:/data/scratch downloader:0.1 /data/input L2 SPACE MODIS_T /data/output 1000 1 1 yes yes`
+`docker run --name gen-test -v /downloader/input:/data/input -v /downloader/logs:/data/logs -v /downloader/output:/data/output -v /downloader/scratch:/data/scratch downloader:0.1 /data/lists 0 L2 SPACE MODIS_T /data/output 5 1 yes yes`
 
 VIIRS: 
-`docker run --name gen-test -v /downloader/input:/data/input -v /downloader/logs:/data/logs -v /downloader/output:/data/output -v /downloader/scratch:/data/scratch downloader:0.1 /data/input L2 SPACE VIIRS /data/output 1000 1 1 yes yes`
+`docker run --name gen-test -v /downloader/input:/data/input -v /downloader/logs:/data/logs -v /downloader/output:/data/output -v /downloader/scratch:/data/scratch downloader:0.1 /data/lists 0 L2 SPACE VIIRS /data/output 5 1 yes yes`
 
 Please note that in order for the commands to execute the `/downloader/` directories will need to point to actual directories on the system.
