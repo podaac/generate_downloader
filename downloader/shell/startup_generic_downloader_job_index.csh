@@ -148,7 +148,7 @@ if ($job_index == "-235") then
 else
     set index = $job_index
 endif
-set list_name = `cat $list_directory/"download_file_lists.json" | jq -r --argjson index $index '.[$index]'`
+set list_name = `cat $list_directory/"download_file_lists_$processing_type.json" | jq -r --argjson index $index '.[$index]'`
 set file_list_to_download = $list_directory/$list_name
 
 # Download files in list
