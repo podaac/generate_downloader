@@ -58,16 +58,17 @@ endif
 # 11 = test_run_flag 
 
 set list_directory               = $1
-set job_index                    = $2
-set processing_level             = $3
-set separator_character          = $4
-set processing_type              = $5
-set top_level_output_directory   = $6
-set num_files_to_download        = $7
-set sleep_time_in_between_files  = $8
-set move_filelist_file_when_done = $9
-set perform_checksum_flag        = $10
-set test_run_flag                = $11
+set list_name                    = $2
+set job_index                    = $3
+set processing_level             = $4
+set separator_character          = $5
+set processing_type              = $6
+set top_level_output_directory   = $7
+set num_files_to_download        = $8
+set sleep_time_in_between_files  = $9
+set move_filelist_file_when_done = $10
+set perform_checksum_flag        = $11
+set test_run_flag                = $12
 
 # Create the logs directory if it does not exist yet   # NET edit.
 set logging_dir = `printenv | grep OBPG_DOWNLOADER_LOGGING | awk -F= '{print $2}'`
@@ -123,6 +124,15 @@ setenv JOB_NAME_ONLY "obpg_download_process_"$name_snippet"_${processing_type}_d
 setenv JOB_FULL_NAME $JOB_DIRECTORY/$JOB_NAME_ONLY
 touch $JOB_FULL_NAME
 
+# Retrieve file list name
+if ($job_index == "-235") then
+    set index = $AWS_BATCH_JOB_ARRAY_INDEX
+else
+    set index = $job_index
+endif
+set list_files = `cat $list_directory/$list_name | jq -r --argjson index $index '.[$index]'`
+set file_list_to_download = $list_directory/$list_files
+
 # Echo data about program
 echo "Command line arguments:"
 echo "    list_directory                $1"
@@ -138,18 +148,9 @@ echo "    perform_checksum_flag:        $10"
 echo "    test_run_flag:                $11"
 echo ""
 echo "Log file                          $downloader_log_name"
-echo ""
 echo "Job name                          $JOB_FULL_NAME"
+echo "File list                         $file_list_to_download"
 echo ""
-
-# Retrieve file list name
-if ($job_index == "-235") then
-    set index = $AWS_BATCH_JOB_ARRAY_INDEX
-else
-    set index = $job_index
-endif
-set list_name = `cat $list_directory/"download_file_lists_$processing_type.json" | jq -r --argjson index $index '.[$index]'`
-set file_list_to_download = $list_directory/$list_name
 
 # Download files in list
 set python_exe = `printenv | grep PYTHON3_EXECUTABLE_PATH | awk -F= '{print $2}'` 
