@@ -60,7 +60,7 @@ def getSession(verbose=0, ntries=5):
 # From OBPG, with thanks.  Individual download request. 
 
 def httpdl(https_server_request, localpath='.', outputfilename=None, ntries=5,
-           timeout=30., verbose=0,
+           timeout=36., verbose=0,
            chunk_size=DEFAULT_CHUNK_SIZE):
 
     status = 0
@@ -235,7 +235,8 @@ def perform_download_only(instanceOf, *args):
             time_download = t1 - t0;
             # The download is a success, we can break out of the while loop immediately.
             break;
-        except requests.exceptions.Timeout as e:
+        # except requests.exceptions.Timeout as e:
+        except requests.exceptions.ConnectionError as e:
             t1 = time.time()
             time_download = t1 - t0;
 
