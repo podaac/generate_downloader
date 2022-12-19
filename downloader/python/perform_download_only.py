@@ -236,6 +236,18 @@ def perform_download_only(instanceOf, *args):
             # The download is a success, we can break out of the while loop immediately.
             break;
         # except requests.exceptions.Timeout as e:
+        except requests.exceptions.ConnectTimeout as e:
+            t1 = time.time()
+            time_download = t1 - t0;
+
+            log_this("ERROR",debug_module,"FILE_DOWNLOADING" + " " + i_temporary_location_of_downloaded_file + " " + "DOWNLOAD_ELAPSED" + str('{:5.2f}'.format(time_download)) + " " + "ATTEMPT_COUNT" + " " + str('{:03d}'.format(attempt_count)));
+            attempt_count += 1;
+
+            # Go to sleep to give the other process time to finish:
+
+            log_this("ERROR",debug_module,"FILE_DOWNLOADING" + " " + i_temporary_location_of_downloaded_file + " " + "SLEEPING " + str(CONST_PERFORM_DOWNLOAD_ONLY_MAX_SLEEP_IN_BETWEEN_WAITS) + " " + "SECONDS");
+            time.sleep(CONST_PERFORM_DOWNLOAD_ONLY_MAX_SLEEP_IN_BETWEEN_WAITS);
+            
         except requests.exceptions.ConnectionError as e:
             t1 = time.time()
             time_download = t1 - t0;
