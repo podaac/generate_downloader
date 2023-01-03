@@ -1,7 +1,6 @@
 terraform {
   backend "s3" {
     encrypt = true
-    key     = "downloader.tfstate"
   }
   required_providers {
     aws = {
