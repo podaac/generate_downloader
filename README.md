@@ -2,6 +2,8 @@
 
 The downloader downloads files from the OBPG based on lists created by the download list creator component.
 
+Top-level Generate repo: https://github.com/podaac/generate
+
 ## pre-requisites to building
 
 The following variables must be present in the user's environment:
