@@ -25,12 +25,8 @@ provider "aws" {
 # Data sources
 data "aws_caller_identity" "current" {}
 
-data "aws_efs_file_system" "aws_efs_combiner" {
-  creation_token = "${var.prefix}-combiner"
-}
-
-data "aws_efs_file_system" "aws_efs_downloader" {
-  creation_token = "${var.prefix}-downloader"
+data "aws_efs_file_system" "aws_efs_generate" {
+  creation_token = var.prefix
 }
 
 data "aws_security_groups" "vpc_default_sg" {

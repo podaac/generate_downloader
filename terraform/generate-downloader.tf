@@ -49,16 +49,16 @@ resource "aws_batch_job_definition" "generate_batch_jd_downloader" {
         {
             "name": "downloader",
             "efsVolumeConfiguration": {
-            "fileSystemId": "${data.aws_efs_file_system.aws_efs_downloader.file_system_id}",
-            "rootDirectory": "/"
+            "fileSystemId": "${data.aws_efs_file_system.aws_efs_generate.file_system_id}",
+            "rootDirectory": "/downloader"
             }
         },
         {
             "name": "combiner",
             "efsVolumeConfiguration": {
-            "fileSystemId": "${data.aws_efs_file_system.aws_efs_combiner.file_system_id}",
-            "rootDirectory": "/downloads"
-            }         
+            "fileSystemId": "${data.aws_efs_file_system.aws_efs_generate.file_system_id}",
+            "rootDirectory": "/combiner/downloads"
+            }
         }
     ]
   }
