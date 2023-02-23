@@ -125,6 +125,7 @@ def perform_checksum_check_and_move(i_final_location_of_downloaded_file,
         # Rename final output file to exclude NRT token if present
         if ".NRT" in i_final_location_of_downloaded_file:
             os.rename(i_final_location_of_downloaded_file, i_final_location_of_downloaded_file.replace(".NRT", ""))
+            i_final_location_of_downloaded_file = i_final_location_of_downloaded_file.replace(".NRT", "")
 
 #        # Remove the lock if exist.
 
@@ -136,7 +137,7 @@ def perform_checksum_check_and_move(i_final_location_of_downloaded_file,
     if (debug_mode):
         print(debug_module + "o_move_status",o_move_status);
     
-    return(o_move_status);
+    return(o_move_status, i_final_location_of_downloaded_file);
 
 #------------------------------------------------------------------------------------------------------------------------
 def perform_checksum_check(i_download_file_name,i_checksum_value):

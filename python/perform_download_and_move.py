@@ -114,7 +114,7 @@ def perform_download_and_move(i_num_files_downloaded,
         o_download_and_move_status = mkdir_with_error_handling(os.path.dirname(i_final_location_of_downloaded_file))
 
         if (o_download_and_move_status):   # Status equals 1
-            o_download_and_move_status = perform_checksum_check_and_move(i_final_location_of_downloaded_file,
+            o_download_and_move_status, i_final_location_of_downloaded_file = perform_checksum_check_and_move(i_final_location_of_downloaded_file,
                                                                         i_temporary_location_of_downloaded_file,
                                                                         i_perform_checksum_flag,
                                                                         file_name_to_get_checksum_for,
