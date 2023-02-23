@@ -16,6 +16,11 @@ resource "aws_cloudwatch_log_group" "generate_cw_log_group_downloader" {
   retention_in_days = 120
 }
 
+resource "aws_cloudwatch_log_group" "generate_cw_log_group_downloader_error" {
+  name              = "/aws/batch/job/${var.prefix}-downloader-errors/"
+  retention_in_days = 120
+}
+
 # Job Definition
 resource "aws_batch_job_definition" "generate_batch_jd_downloader" {
   name                  = "${var.prefix}-downloader"
