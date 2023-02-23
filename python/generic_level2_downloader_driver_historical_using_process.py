@@ -39,7 +39,7 @@ from generic_level2_downloader_driver_via_fork_historical import generic_level2_
 from get_local_time                 import get_local_pdt_time;
 from log_this import log_this;
 from move_to_processed_download_directory import move_to_processed_download_directory;
-from raise_sigevent_wrapper     import raise_sigevent_wrapper;
+from notify import notify
 
 #------------------------------------------------------------------------------------------------------------------------
 def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
@@ -92,14 +92,6 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
     localtime = get_local_pdt_time();
     begin_processing_time = strftime("%a %b %d %H:%M:%S %Y",localtime); 
     log_this("INFO",g_routine_name,"BEGIN_PROCESSING_TIME " + begin_processing_time);
-
-    # Some variables related to sigevent.
-
-    sigevent_url = os.getenv('GHRSST_SIGEVENT_URL','');
-    sigevent_source = "GHRSST-PROCESSING";
-    if (sigevent_url == ''):
-        print("You must defined the sigevent URL: i.e. setenv GHRSST_SIGEVENT_URL http://test.jpl.nasa.gov:8100"); 
-        sys.exit(0);
 
     # Time related variables used to keep track of how long things take.
 
@@ -324,7 +316,7 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
         # Do a sanity check if cannot get any lines to download from the list_of_files_to_download.  Something is wrong for that to happen.
         if (len(batch_of_lines_to_download) <= 0):
             print(debug_module + "ERROR: Something went wrong with getting a batch of lines to download from list_of_files_to_download.  Program exiting.");
-            sys.exit(0);
+            sys.exit(1);
 
         # Keep track of how many batches created and how many names collected so far.
         num_batches_created = num_batches_created + 1;
@@ -416,7 +408,7 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
 
         if (child_pid is None):
             log_this("ERROR",g_routine_name,"Cannot fork on processing " + working_on_this_batch);
-            sys.exit(0);
+            sys.exit(1);
         elif ((child_pid == 0) or (child_pid == DUMMY_PROCESS_ID)):
             # Only increment the num_subprocesses_started if we running as a sub process.
             if (debug_mode):
@@ -591,16 +583,10 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
         # Some variables related to sigevent.
 
         sigevent_type = "ERROR";
-        sigevent_category = "GENERATE";
         sigevent_description = "MONITOR_JOB_COMPLETION:FAILED_SOME_DOWNLOAD_JOBS_MAY_NOT_COMPLETE_YET NUM_INCOMPLETE_JOBS " + str(o_num_incompleted_jobs) + " OUT_OF " + str(num_filenames_dispatched_for_download_total) + " o_total_seconds_waited " + str(o_total_seconds_waited); 
         sigevent_data = "Please inspect directory " + o_hidden_download_directory + " for stale file associated with a download.";
-        sigevent_debug_flag = None;
         print(debug_module + "ERROR:" + sigevent_description);
-        raise_sigevent_wrapper(sigevent_type,
-                               sigevent_category,
-                               sigevent_description,
-                               sigevent_data,
-                               sigevent_debug_flag);
+        notify(sigevent_type, sigevent_description, sigevent_data)
 
     # Close the child pipe if no sub process started (i.e. not running in parallel) and it is still open.
     if ((num_subprocesses_started == 0) or not use_parallel_processing_flag):

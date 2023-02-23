@@ -5,8 +5,8 @@
 #
 ################################################################################
 
-# Set environment for sigevent manager to handle errors and notifications.
-setenv GHRSST_SIGEVENT_URL http://test.test.com:8080
+# Set environment to handle errors and notifications.
+setenv SIGEVENT_SOURCE "GENERATE DOWNLOADER"
 
 # Path to log file.
 setenv OBPG_DOWNLOADER_LOGGING /data/logs    # NET edit. (Docker container)

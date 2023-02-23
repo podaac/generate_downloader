@@ -12,7 +12,7 @@ import time
 from time import strftime, gmtime
 
 from log_this import log_this;
-from raise_sigevent_wrapper import raise_sigevent_wrapper;
+from notify import notify
 
 #------------------------------------------------------------------------------------------------------------------------
 # Function perform a mkdir() function on the given directory name and returns 1 if successful and 0 if failed.
@@ -69,18 +69,12 @@ def mkdir_with_error_handling(i_directory_to_create):
             print(debug_module + "raise_sigevent");
 
         sigevent_type     = 'ERROR'
-        sigevent_category = 'GENERATE'
         sigevent_description = debug_module + "MKDIR_FAILED " + i_directory_to_create;
         sigevent_data        = "";
-        sigevent_debug_flag  = None;
 
         print(debug_module + sigevent_description);
 
-        raise_sigevent_wrapper(sigevent_type,
-                               sigevent_category,
-                               sigevent_description,
-                               sigevent_data,
-                               sigevent_debug_flag);
+        notify(sigevent_type, sigevent_description, sigevent_data)
 
     return(o_mkdir_status);
 

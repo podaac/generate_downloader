@@ -168,7 +168,7 @@ class generic_downloader_job_manager:
             destination_output_directory = i_top_level_output_directory + "/" + output_sub_directory_name;
         else:
             print(debug_module + "ERROR:The sub directory for processing_type " + i_processing_type + "is not supported yet.");
-            exit(0);
+            exit(1);
 
         # Because it is possible for the directory to not exist yet, we create it here.
         if not os.path.isdir(destination_output_directory):
@@ -249,8 +249,8 @@ class generic_downloader_job_manager:
         if (output_sub_directory_name != ""):
             destination_output_directory = i_top_level_output_directory + "/" + output_sub_directory_name;
         else:
-            print(debug_module + "The sub directory for processing_type " + i_processing_type + "is not supported yet.");
-            exit(0);
+            print("ERROR" + debug_module + "The sub directory for processing_type " + i_processing_type + "is not supported yet.");
+            exit(1);
 
         hidden_download_directory = destination_output_directory + "/.registry";
 
@@ -312,7 +312,7 @@ class generic_downloader_job_manager:
             destination_output_directory = i_top_level_output_directory + "/" + output_sub_directory_name;
         else:
             print(debug_module + "ERROR:The sub directory for processing_type " + i_processing_type + " is not supported yet.");
-            exit(0);
+            exit(1);
 
         temporary_location_of_downloaded_file = "";
 

@@ -63,7 +63,7 @@ def nfs_lock_file(i_semaphore_name):
                 print(now_ascii() + debug_module + "new_life_duration " + str(new_life_duration));
         else:
             print(debug_module + "Must set CRAWLER_SEARCH_MAX_LOCK_LIFETIME environment variable to value greater than or equal to " + str(MAX_LOCK_LIFETIME) + ".  Current value " + os.getenv('CRAWLER_SEARCH_MAX_LOCK_LIFETIME',''));
-            exit(0);
+            exit(1);
     
     lock_file_name = i_semaphore_name + ".NFSlock";
     try :

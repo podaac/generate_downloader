@@ -98,26 +98,7 @@ def generic_level2_downloader_driver_via_fork_historical(i_pipe_writer,
 
     if (settings.g_gdjm is None):
         print("The global object g_gdjm has not been created yet.  Cannot continue.");
-        exit(0);
-
-    # Some variables related to sigevent.
-
-    sigevent_provider      = "JPL";
-    sigevent_type = "information";
-    sigevent_category = "UNCATEGORY";
-    sigevent_msg = "hello there";
-    sigevent_email_to = "DUMMY_EMAIL";
-    sigevent_url = os.getenv("GHRSST_SIGEVENT_URL","")
-    sigevent_source = "GHRSST-PROCESSING";
-
-    if (sigevent_url == ''):
-        print("You must defined the sigevent URL: i.e. setenv GHRSST_SIGEVENT_URL http://test.jpl.nasa.gov:8080"); 
-        exit(0);
-
-    sigevent_clause = "SIGEVENT=" + sigevent_url + "&category=GENERATE&provider=jpl";
-    temp_dir = "/tmp/";
-    msg2report = 7;
-    sigevent_data = '';
+        exit(1);
 
     # Time related variables used to keep track of how long things take.
 

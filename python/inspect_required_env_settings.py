@@ -18,7 +18,7 @@ def inspect_required_env_settings():
     debug_module = "inspect_required_env_settings:";
     o_all_required_settings_are_ok = 1;
 
-    required_variable = "GHRSST_SIGEVENT_URL";
+    required_variable = "SIGEVENT_SOURCE";
     if (os.getenv(required_variable,"") == ""):
         log_this("ERROR",debug_module,"Required setting " + required_variable + " is missing.  Program terminating.");
         o_all_required_settings_are_ok = 0;

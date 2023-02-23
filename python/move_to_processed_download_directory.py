@@ -14,7 +14,7 @@ from mkdir_with_error_handling     import mkdir_with_error_handling;
 from file_move_with_error_handling import file_move_with_error_handling;
 from get_local_time                import get_local_pdt_time;
 from log_this                      import log_this;
-from raise_sigevent_wrapper        import raise_sigevent_wrapper;
+from notify                        import notify
 
 #------------------------------------------------------------------------------------------------------------------------
 # After a file list has been processed, we move the file to a directory "processed_download_filelist" for safe keeping for a few weeks.
@@ -106,18 +106,12 @@ def move_to_processed_download_directory(i_processing_type,
 
         sigevent_type     = 'ERROR'
         sigevent_description = "FILE_MOVE_FAILED_FILE_DOES_NOT_EXIST " + i_filename_to_move;
-        sigevent_category = 'GENERATE'
         sigevent_data        = "";
-        sigevent_debug_flag  = None;
 
         print(debug_module + sigevent_description);
         log_this("ERROR",g_routine_name,sigevent_description);
-
-        raise_sigevent_wrapper(sigevent_type,
-                               sigevent_category,
-                               sigevent_description,
-                               sigevent_data,
-                               sigevent_debug_flag);
+        
+        notify(sigevent_type, sigevent_description, sigevent_data)
 
     return(o_status_move);
 

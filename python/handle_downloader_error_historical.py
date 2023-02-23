@@ -19,15 +19,10 @@ from get_local_time import get_local_pdt_time;
 from log_this import log_this;
 from nfs_lock_file_wrapper import nfs_lock_file_wrapper;
 from nfs_unlock_file       import nfs_unlock_file;
-from raise_sigevent import raise_sigevent;
+from notify                import notify
 
-sigevent_provider      = "JPL";
 sigevent_type = "information";
-sigevent_category = "UNCATEGORY";
 sigevent_msg = "hello there";
-sigevent_email_to = "DUMMY_EMAIL";
-sigevent_url = os.getenv('GHRSST_SIGEVENT_URL','');
-sigevent_source = "GHRSST-PROCESSING";
 sigevent_data = "";
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -77,9 +72,8 @@ def handle_downloader_error_historical(i_full_pathname_to_download,
     if (error_count < ERROR_COUNT_THRESHOLD):
         sigevent_msg = "The number of download errors for " + i_full_pathname_to_download + " is " + str(error_count) + ", max is " + str(ERROR_COUNT_THRESHOLD);
         sigevent_type = "WARN";
-        sigevent_category = "GENERATE";
-        sigevent_url = os.getenv('GHRSST_SIGEVENT_URL','');
-        raise_sigevent(sigevent_url,sigevent_provider,sigevent_source,sigevent_type,sigevent_category,g_routine_name + ":" + sigevent_msg,sigevent_data);
+        sigevent_description = g_routine_name + ":" + sigevent_msg
+        notify(sigevent_type, sigevent_description, sigevent_data)
         log_this("WARN",g_routine_name,sigevent_msg);
         update_error_count(i_full_pathname_to_download,error_count);
 
@@ -126,9 +120,8 @@ def handle_downloader_error_historical(i_full_pathname_to_download,
         # The error count has reached the threshold, raise an ERROR sigevent and delete the the error count file.
         sigevent_msg = "The number of download errors for " + i_full_pathname_to_download + " has reached " + str(ERROR_COUNT_THRESHOLD);
         sigevent_type = "ERROR";
-        sigevent_category = "GENERATE";
-        sigevent_url = os.getenv('GHRSST_SIGEVENT_URL','');
-        raise_sigevent(sigevent_url,sigevent_provider,sigevent_source,sigevent_type,sigevent_category,g_routine_name + ":" + sigevent_msg,sigevent_data);
+        sigevent_description = g_routine_name + ":" + sigevent_msg
+        notify(sigevent_type, sigevent_description, sigevent_data)
         sigevent_msg = sigevent_msg + "  An ERROR sigevent has been raised.";
         log_this("ERROR",g_routine_name,sigevent_msg);
         delete_error_count(i_full_pathname_to_download);
