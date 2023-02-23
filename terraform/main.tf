@@ -33,6 +33,10 @@ data "aws_cloudwatch_log_group" "cw_log_group" {
   name = "/aws/batch/job/${var.prefix}-downloader/"
 }
 
+data "aws_iam_role" "batch_job_role" {
+  name = "${var.prefix}-batch-job-role"
+}
+
 data "aws_security_groups" "vpc_default_sg" {
   filter {
     name   = "group-name"

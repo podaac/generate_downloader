@@ -17,6 +17,7 @@ resource "aws_batch_job_definition" "generate_batch_jd_downloader" {
   container_properties  = <<CONTAINER_PROPERTIES
   {
     "image": "${aws_ecr_repository.downloader.repository_url}:latest",
+    "jobRoleArn": "${data.aws_iam_role.batch_job_role.arn}",
     "logConfiguration": {
         "logDriver" : "awslogs",
         "options": {
