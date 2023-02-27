@@ -75,15 +75,26 @@ def log_event(sigevent_type, sigevent_description, sigevent_data, logger):
         )
         log_group_name = describe_response["logGroups"][0]["logGroupName"]
         
-        # Create log stream
-        log_stream_name = f"downloader-batch-job-error-{datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S.%f')}"
-        create_response = logs.create_log_stream(
+         # Find or create log stream - New creation happens every hour
+        log_stream_name = f"{os.getenv('AWS_BATCH_JQ_NAME')}-downloader-job-error-{datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H')}0000"
+        describe_stream_response = logs.describe_log_streams(
             logGroupName=log_group_name,
-            logStreamName=log_stream_name
+            logStreamNamePrefix=log_stream_name
         )
+        if len(describe_stream_response["logStreams"]) == 0:       
+            create_response = logs.create_log_stream(
+                logGroupName=log_group_name,
+                logStreamName=log_stream_name
+            )
+        else:
+            log_stream_name=describe_stream_response["logStreams"][0]["logStreamName"]
         
         # Send logs
         log_events = [
+            {
+                "timestamp": int(time.time() * 1000),
+                "message": "==================================================="
+            },
             {
                 "timestamp": int(time.time() * 1000),
                 "message": "Downloader job ERROR encountered."
