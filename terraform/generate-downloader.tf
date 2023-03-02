@@ -24,6 +24,9 @@ resource "aws_batch_job_definition" "generate_batch_jd_downloader" {
             "awslogs-group" : "${data.aws_cloudwatch_log_group.cw_log_group.name}"
         }
     },
+    "environment" : [
+      { "name" : "AWS_DEFAULT_REGION", "value" : "us-west-2" }
+    ],
     "mountPoints": [
         {
             "sourceVolume": "downloader",
