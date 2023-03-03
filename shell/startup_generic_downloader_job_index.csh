@@ -161,8 +161,8 @@ if ($test_run_flag == "true") then
 else
     echo "Index                         $index"
     echo "FILE LIST TO DOWNLOAD         $file_list_to_download"
-    echo "$python_exe $OBPG_RUNENV_PYTHON_HOME/generic_level2_downloader.py $file_list_to_download $processing_level $separator_character $processing_type $top_level_output_directory $num_files_to_download $sleep_time_in_between_files $move_filelist_file_when_done $perform_checksum_flag $today_date $JOB_FULL_NAME $test_run_flag >> $downloader_log_name"
-    $python_exe $OBPG_RUNENV_PYTHON_HOME/generic_level2_downloader.py $file_list_to_download $processing_level $separator_character $processing_type $top_level_output_directory $num_files_to_download $sleep_time_in_between_files $move_filelist_file_when_done $perform_checksum_flag $today_date  $JOB_FULL_NAME $test_run_flag >> $downloader_log_name
+    echo "$python_exe $OBPG_RUNENV_PYTHON_HOME/generic_level2_downloader.py $file_list_to_download $processing_level $separator_character $processing_type $top_level_output_directory $num_files_to_download $sleep_time_in_between_files $move_filelist_file_when_done $perform_checksum_flag $today_date $JOB_FULL_NAME $test_run_flag | tee $downloader_log_name"
+    $python_exe $OBPG_RUNENV_PYTHON_HOME/generic_level2_downloader.py $file_list_to_download $processing_level $separator_character $processing_type $top_level_output_directory $num_files_to_download $sleep_time_in_between_files $move_filelist_file_when_done $perform_checksum_flag $today_date  $JOB_FULL_NAME $test_run_flag | tee $downloader_log_name
 endif
 
 # Get contents of error file indicator see if any errors were encountered in python script
