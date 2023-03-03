@@ -1,3 +1,4 @@
+#!/app/env/bin/python3
 #***************************************************************************
 #
 # Copyright 2017, by the California Institute of Technology. ALL
@@ -45,6 +46,7 @@ import datetime
 import getopt
 import hashlib
 import os
+import pathlib
 import sys
 import time
 import urllib.request, urllib.error, urllib.parse
@@ -88,8 +90,7 @@ def generic_level2_downloader(i_filelist_name,
                                                 i_today_date,
                                                 i_job_full_name,
                                                 i_test_run_flag);
-
-    sys.exit(0);
+    
 
 def get_today_date():
     # Return today's date in 11_20_14_11_25
@@ -189,13 +190,25 @@ def validate_input(i_filelist_name,
 
     if (error_found_flag):
         print(g_debug_module + "ERROR: Cannot continue.  Error(s) found in parameters.");
-        sys.exit(1); # Return a value of 1 (to signify that it failed).  A value of 0 means good.
+        raise FileNotFoundError # Raise file not found error
     else:
       if (debug_mode):
         print(g_debug_module + "INFO: Will continue.  No errors found in parameters.");
 
     return;
 
+def write_out_error_file(filelist_name):
+    """Write out text file if errors are encountered.
+    
+    This will alert the calling script that an error has occured so that it may
+    set the program exit code appropriately.
+    """
+    
+    log_dir = pathlib.Path(os.getenv('OBPG_DOWNLOADER_LOGGING'))
+    error_file = f"error_{filelist_name.split('_')[-1].split('.txt')[0]}.txt"
+    error_file = f"{log_dir.joinpath(error_file)}"
+    with open(error_file, 'w') as fh:
+        fh.write("error")
 
 if __name__ == "__main__":
     # python generic_level2_downloader.py i_filelist_name i_processing_level i_separator_character i_processing_type i_top_level_output_directory i_num_files_to_download i_sleep_time_in_between_files i_move_filelist_file_when_done i_perform_checksum_flag
@@ -263,32 +276,39 @@ if __name__ == "__main__":
         print(debug_module + "i_job_full_name",i_job_full_name);
         print(debug_module + "i_test_run_flag",i_test_run_flag);
 
-    validate_input(i_filelist_name,
-                   i_processing_level,
-                   i_separator_character,
-                   i_processing_type,
-                   i_top_level_output_directory,
-                   i_num_files_to_download,
-                   i_sleep_time_in_between_files,
-                   i_move_filelist_file_when_done,
-                   i_perform_checksum_flag,
-                   i_today_date,
-                   i_job_full_name,
-                   i_test_run_flag);
+    try:
+        validate_input(i_filelist_name,
+                    i_processing_level,
+                    i_separator_character,
+                    i_processing_type,
+                    i_top_level_output_directory,
+                    i_num_files_to_download,
+                    i_sleep_time_in_between_files,
+                    i_move_filelist_file_when_done,
+                    i_perform_checksum_flag,
+                    i_today_date,
+                    i_job_full_name,
+                    i_test_run_flag);
 
-    # The input are good, we can proceed with the download.
+        # The input are good, we can proceed with the download.
 
-    generic_level2_downloader(i_filelist_name,
-                              i_processing_level,
-                              i_separator_character,
-                              i_processing_type,
-                              i_top_level_output_directory,
-                              i_num_files_to_download,
-                              i_sleep_time_in_between_files,
-                              i_move_filelist_file_when_done,
-                              i_perform_checksum_flag,
-                              i_today_date,
-                              i_job_full_name,
-                              i_test_run_flag);
-
-    sys.exit(0); # Return a value of 0 means good.
+        generic_level2_downloader(i_filelist_name,
+                                i_processing_level,
+                                i_separator_character,
+                                i_processing_type,
+                                i_top_level_output_directory,
+                                i_num_files_to_download,
+                                i_sleep_time_in_between_files,
+                                i_move_filelist_file_when_done,
+                                i_perform_checksum_flag,
+                                i_today_date,
+                                i_job_full_name,
+                                i_test_run_flag);
+    except Exception as e:
+        write_out_error_file(i_filelist_name)
+        print("ERROR encountered...")
+        print(type(e))
+        print("Exiting with exit code 1.")
+        sys.exit(1)
+    else:
+        sys.exit(0) # Return a value of 0 means good.

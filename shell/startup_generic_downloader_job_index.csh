@@ -164,3 +164,16 @@ else
     echo "$python_exe $OBPG_RUNENV_PYTHON_HOME/generic_level2_downloader.py $file_list_to_download $processing_level $separator_character $processing_type $top_level_output_directory $num_files_to_download $sleep_time_in_between_files $move_filelist_file_when_done $perform_checksum_flag $today_date $JOB_FULL_NAME $test_run_flag >> $downloader_log_name"
     $python_exe $OBPG_RUNENV_PYTHON_HOME/generic_level2_downloader.py $file_list_to_download $processing_level $separator_character $processing_type $top_level_output_directory $num_files_to_download $sleep_time_in_between_files $move_filelist_file_when_done $perform_checksum_flag $today_date  $JOB_FULL_NAME $test_run_flag >> $downloader_log_name
 endif
+
+# Get contents of error file indicator see if any errors were encountered in python script
+set file_list=($file_list_to_download:as/_/ /)
+set i="${#file_list}"
+set unique_id=($file_list[$i]:as/./ /)
+set error_filename="error_$unique_id[1].txt"
+set error_file="$logging_dir/$error_filename"
+if ( -f "$error_file" ) then
+    set error_msg=`cat $error_file`
+    rm -rf $error_file    # Remove error file indicator
+    echo "startup_generic_downloader_job_index.csh exiting with status of 1"
+    exit(1)
+endif
