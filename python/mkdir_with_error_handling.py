@@ -22,7 +22,7 @@ def mkdir_with_error_handling(i_directory_to_create):
 
     g_routine_name = "mkdir_with_error_handling";
     debug_module   = "mkdir_with_error_handling:";
-    debug_mode     = 0;
+    debug_mode     = 1;
     if (os.getenv('CRAWLER_SEARCH_DEBUG_FLAG','') == "true"):
         debug_mode   = 1;
 
