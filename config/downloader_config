@@ -8,6 +8,9 @@
 # Set environment to handle errors and notifications.
 setenv SIGEVENT_SOURCE "GENERATE DOWNLOADER"
 
+# Path to directory to store .netrc file
+setenv NETRC_DIR /root
+
 # Path to log file.
 setenv OBPG_DOWNLOADER_LOGGING /data/logs    # NET edit. (Docker container)
 

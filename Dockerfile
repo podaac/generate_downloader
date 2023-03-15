@@ -13,17 +13,8 @@ COPY . /app
 RUN /usr/local/bin/python3 -m venv /app/env
 RUN /app/env/bin/pip install -r /app/requirements.txt
 
-# Stage 3 - .netrc credentials
+# Stage 3 - Execute code
 # FROM stage2 as stage3
-ARG MACHINE
-ARG LOGIN
-ARG PASSWORD
-RUN /bin/chmod +x /app/create_netrc.sh
-RUN /app/create_netrc.sh $MACHINE $LOGIN $PASSWORD
-RUN /bin/rm /app/create_netrc.sh
-
-# Stage 4 - Execute code
-# FROM stage3 as stage4
 LABEL version="0.1" \
     description="Containerized Generate: Downloader"
 ENTRYPOINT [ "/bin/tcsh", "/app/shell/startup_generic_downloader_job_index.csh" ] 

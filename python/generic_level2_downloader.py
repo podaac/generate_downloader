@@ -55,6 +55,7 @@ from time import strftime, gmtime
 
 # Import user-defined modules.
 
+from create_netrc import create_netrc, remove_netrc
 from generic_level2_downloader_driver_historical_using_process import generic_level2_downloader_driver_historical_using_process;
 from inspect_required_env_settings  import inspect_required_env_settings;
 
@@ -277,6 +278,7 @@ if __name__ == "__main__":
         print(debug_module + "i_test_run_flag",i_test_run_flag);
 
     try:
+        create_netrc()
         validate_input(i_filelist_name,
                     i_processing_level,
                     i_separator_character,
@@ -304,10 +306,12 @@ if __name__ == "__main__":
                                 i_today_date,
                                 i_job_full_name,
                                 i_test_run_flag);
+        remove_netrc()
     except Exception as e:
         write_out_error_file(i_filelist_name)
         print("ERROR encountered...")
         print(type(e))
+        if pathlib.Path(os.getenv("NETRC_DIR")).joinpath(".netrc").exists(): remove_netrc()
         print("Exiting with exit code 1.")
         sys.exit(1)
     else:
