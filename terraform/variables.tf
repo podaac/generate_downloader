@@ -20,6 +20,16 @@ variable "default_tags" {
   default = {}
 }
 
+variable "edl_password" {
+  type        = string
+  description = "Earthdata Login password"
+}
+
+variable "edl_username" {
+  type        = string
+  description = "Earthdata Login username"
+}
+
 variable "environment" {
   type        = string
   description = "The environment in which to deploy to"
