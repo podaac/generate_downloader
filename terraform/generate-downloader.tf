@@ -1,22 +1,10 @@
-# ECR
-resource "aws_ecr_repository" "downloader" {
-  name = "${var.prefix}-downloader"
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-  image_tag_mutability = "MUTABLE"
-  encryption_configuration {
-    encryption_type = "AES256"
-  }
-}
-
 # Job Definition
 resource "aws_batch_job_definition" "generate_batch_jd_downloader" {
   name                  = "${var.prefix}-downloader"
   type                  = "container"
   container_properties  = <<CONTAINER_PROPERTIES
   {
-    "image": "${aws_ecr_repository.downloader.repository_url}:latest",
+    "image": "${data.aws_ecr_repository.downloader.repository_url}:latest",
     "jobRoleArn": "${aws_iam_role.batch_job_role_downloader.arn}",
     "logConfiguration": {
         "logDriver" : "awslogs",
@@ -79,7 +67,6 @@ resource "aws_ssm_parameter" "aws_ssm_parameter_edl_username" {
   value       = var.edl_username
 }
 
-# MODIS Terra
 resource "aws_ssm_parameter" "aws_ssm_parameter_edl_password" {
   name        = "generate-edl-password"
   description = "Earthdata Login password"

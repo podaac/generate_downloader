@@ -25,6 +25,10 @@ provider "aws" {
 # Data sources
 data "aws_caller_identity" "current" {}
 
+data "aws_ecr_repository" "downloader" {
+  name = "${var.prefix}-downloader"
+}
+
 data "aws_efs_file_system" "aws_efs_generate" {
   creation_token = var.prefix
 }
