@@ -311,6 +311,7 @@ if __name__ == "__main__":
         write_out_error_file(i_filelist_name)
         print("ERROR encountered...")
         print(type(e))
+        print(e)
         if pathlib.Path(os.getenv("NETRC_DIR")).joinpath(".netrc").exists(): remove_netrc()
         print("Exiting with exit code 1.")
         sys.exit(1)

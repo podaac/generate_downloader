@@ -128,7 +128,7 @@ resource "aws_iam_policy" "batch_job_role_policy_downloader" {
         ],
         "Resource" : [ 
           "${aws_ssm_parameter.aws_ssm_parameter_edl_username.arn}",
-          "${aws_ssm_parameter.aws_ssm_parameter_edl_username.arn}"
+          "${aws_ssm_parameter.aws_ssm_parameter_edl_password.arn}"
         ]
       }
     ]
