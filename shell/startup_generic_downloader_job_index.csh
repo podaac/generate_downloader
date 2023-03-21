@@ -177,3 +177,11 @@ if ( -f "$error_file" ) then
     echo "startup_generic_downloader_job_index.csh exiting with status of 1"
     exit(1)
 endif
+
+# Check for NetCDF: HDF error
+set downloader_log_name = "/data/dev/tebaldi/aws/downloader/logs/test.log"
+set check=`/home/tebaldi/generate/workspace/generate_downloader/python/check_netcdf_error.py $downloader_log_name`
+if ($check == "error") then
+    echo "startup_generic_downloader_job_index.csh exiting with status of 1"
+    exit(1)
+endif
