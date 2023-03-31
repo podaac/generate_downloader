@@ -13,7 +13,7 @@
 #------------------------------------------------------------------------------------------------
 
 import os
-import sys
+import shutil
 
 from log_this import log_this;
 import settings;
@@ -178,8 +178,12 @@ def preparation_for_downloader(i_one_line,
     # Perhaps we can make this a flag from command line.
 
     if (os.path.exists(o_temporary_location_of_downloaded_file)):
-        log_this("INFO",g_routine_name,"REMOVE_EXISTING_FILE " + o_temporary_location_of_downloaded_file);
-        os.remove(o_temporary_location_of_downloaded_file);
+        if os.path.isdir(o_temporary_location_of_downloaded_file):
+            log_this("INFO",g_routine_name,"REMOVE_EXISTING_DIRECTORY " + o_temporary_location_of_downloaded_file);
+            shutil.rmtree(o_temporary_location_of_downloaded_file)
+        else:
+            log_this("INFO",g_routine_name,"REMOVE_EXISTING_FILE " + o_temporary_location_of_downloaded_file);
+            os.remove(o_temporary_location_of_downloaded_file);
 
     return (o_preparation_status,
             o_checksum_value,
