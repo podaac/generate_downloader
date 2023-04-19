@@ -198,7 +198,7 @@ def validate_input(i_filelist_name,
 
     return;
 
-def write_out_error_file(filelist_name):
+def write_out_error_file():
     """Write out text file if errors are encountered.
     
     This will alert the calling script that an error has occured so that it may
@@ -206,8 +206,12 @@ def write_out_error_file(filelist_name):
     """
     
     log_dir = pathlib.Path(os.getenv('OBPG_DOWNLOADER_LOGGING'))
-    error_file = f"error_{filelist_name.split('_')[-1].split('.txt')[0]}.txt"
-    error_file = f"{log_dir.joinpath(error_file)}"
+    job_id = os.getenv('AWS_BATCH_JOB_ID')
+    child_job = job_id.split(':')
+    if len(child_job) == 2:
+        job_id = f"{child_job[0]}-{child_job[1]}"
+    error_file = log_dir.joinpath(f"error-{job_id}.txt")
+    print(f"generic_level2_downloader, ERROR FILE: {error_file}.")
     with open(error_file, 'w') as fh:
         fh.write("error")
 
@@ -308,7 +312,7 @@ if __name__ == "__main__":
                                 i_test_run_flag);
         remove_netrc()
     except Exception as e:
-        write_out_error_file(i_filelist_name)
+        write_out_error_file()
         print("ERROR encountered...")
         print(type(e))
         print(e)
