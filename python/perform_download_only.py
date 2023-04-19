@@ -70,7 +70,7 @@ def httpdl(https_server_request, localpath='.', outputfilename=None, ntries=5,
     getSession(verbose=verbose, ntries=ntries)
 
     with dnldSession.get(https_server_request, stream=True, timeout=timeout) as req:
-        print(f"DOWNLOAD REQUEST: {req} and {req.headers}")
+        print(f"INFO [perform_download_only] DOWNLOAD REQUEST: {req} and {req.headers}")
         req.raise_for_status()
         ctype = req.headers.get('Content-Type')
         if req.status_code in (400, 401, 403, 404, 416):
@@ -84,10 +84,11 @@ def httpdl(https_server_request, localpath='.', outputfilename=None, ntries=5,
 
             if not outputfilename:
                 cd = req.headers.get('Content-Disposition')
+                print(f"INFO [perform_download_only] Content-Disposition: {cd}")
                 if cd:
                     outputfilename = re.findall("filename=(.+)", cd)[0]
                 else:
-                    outputfilename = urlStr.split('/')[-1]
+                    outputfilename = https_server_request.split('/')[-1]
             
             ofile = os.path.join(localpath, outputfilename)
 
