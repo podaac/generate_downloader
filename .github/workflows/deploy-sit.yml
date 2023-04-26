@@ -69,6 +69,7 @@ jobs:
           echo "TF_VAR_edl_password=${{ secrets.EDL_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Initialize Terraform
+        working-directory: terraform/
         run: |
           terraform init -reconfigure \
               -backend-config="bucket=${PREFIX_ENV}-tf-state" \
