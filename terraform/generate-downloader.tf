@@ -54,9 +54,6 @@ resource "aws_batch_job_definition" "generate_batch_jd_downloader" {
   retry_strategy {
     attempts = 3
   }
-  timeout {
-    attempt_duration_seconds = 86400
-  }
 }
 
 # AWS SSM Parameter Store EDL
@@ -113,7 +110,7 @@ resource "aws_iam_policy" "batch_job_role_policy_downloader" {
         "Action" : [
           "ssm:GetParameter"
         ],
-        "Resource" : [ 
+        "Resource" : [
           "${aws_ssm_parameter.aws_ssm_parameter_edl_username.arn}",
           "${aws_ssm_parameter.aws_ssm_parameter_edl_password.arn}"
         ]
