@@ -1,7 +1,7 @@
 atpublic==3.1.1
 boto3==1.26.76
 botocore==1.29.76
-certifi==2022.12.7
+certifi==2023.7.22
 cftime==1.6.2
 charset-normalizer==3.0.1
 flufl.lock==7.1.1
