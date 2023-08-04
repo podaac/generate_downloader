@@ -281,7 +281,8 @@ class generic_downloader_job_manager:
                              i_processing_type):
 
         debug_module = "is_this_job_complete:";
-        debug_mode   = 0;
+        # debug_mode   = 0;
+        debug_mode = 1
 
         # The three possible states for a job are:
         #
@@ -385,7 +386,7 @@ class generic_downloader_job_manager:
                                i_all_of_lines_to_download):
 
         debug_module = "monitor_job_completion:";
-        debug_mode   = 0;
+        debug_mode   = 1;
 
         # Set the default wait in between each check and how long to wait total before considering a job had failed.
 
