@@ -89,8 +89,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets[format('AWS_ACCESS_KEY_ID_SERVICES_{0}', env.TARGET_ENV)] }}
-          aws-secret-access-key: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_SERVICES_{0}', env.TARGET_ENV)] }}
+          aws-access-key-id: ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}', env.TARGET_ENV)] }}
+          aws-secret-access-key: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_{0}', env.TARGET_ENV)] }}
           aws-region: us-west-2
 
       # Login and define registry, repository, and tag names
@@ -123,8 +123,8 @@ jobs:
         run: |
           echo "TF_VAR_environment=$TARGET_ENV" >> $GITHUB_ENV
           echo "TF_VAR_prefix=$PREFIX_ENV" >> $GITHUB_ENV
-          echo "TF_VAR_edl_username=${{ secrets.EDL_USERNAME }}" >> $GITHUB_ENV
-          echo "TF_VAR_edl_password=${{ secrets.EDL_PASSWORD }}" >> $GITHUB_ENV
+          echo "TF_VAR_edl_username=${{ secrets[format('EDL_USERNAME_{0}', env.TARGET_ENV)] }}" >> $GITHUB_ENV
+          echo "TF_VAR_edl_password=${{ secrets[format('EDL_PASSWORD_{0}', env.TARGET_ENV)] }}" >> $GITHUB_ENV
 
       - name: Initialize Terraform
         working-directory: terraform/
