@@ -19,10 +19,8 @@
 #
 #------------------------------------------------------------------------------------------------
 
-import datetime
 import math
 import os
-import random
 import re
 import sys
 import time
@@ -808,7 +806,7 @@ def register_jobs_in_batch_via_file(i_scratch_area,
     name_count=0;
     
     t0 = time.time();
-    rand_int = random.randint(1, 1000)
+    rand_int = os.getenv("RANDOM_NUMBER")
     for one_line in i_batch_of_lines_to_download:
         name_count = name_count + 1;
         one_line = one_line.rstrip('\n');
