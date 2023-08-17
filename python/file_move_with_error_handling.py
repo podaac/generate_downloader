@@ -24,6 +24,10 @@ def file_move_with_error_handling(i_filename_to_move,
     debug_mode   = 1;
 
     o_move_status = 1;
+    
+    # Built-in test
+    if os.getenv("FILE_MOVE_FAILURE_TEST") == "true":
+        i_filename_to_move = "test_not_a_file.txt"
 
     # Do a sanity check by checking to see if the input file exists.
     if (not os.path.isfile(i_filename_to_move)):
