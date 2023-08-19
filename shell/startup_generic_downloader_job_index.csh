@@ -79,14 +79,22 @@ endif
 # set log_top_level_directory = "$HOME/logs"
 set log_top_level_directory = $logging_dir    # NET edit.
 
+# Create a random number
+set job_id_list = ($AWS_BATCH_JOB_ID:as/:/ /)
+if(${#job_id_list} == 2) then
+  setenv RANDOM_NUMBER "$job_id_list[1]-$job_id_list[2]"
+else
+  setenv RANDOM_NUMBER $AWS_BATCH_JOB_ID
+endif
+echo "RANDOM NUMBER: $RANDOM_NUMBER"
+
 # Get today's date so we can name our log file.
 # The format will be mm_dd_yy_HH_MM as in 09_19_12_16_02
 # The touch command is to create an empty file if it does not exist yet.
 
 # Note: This date is to be Pacific Time.
 setenv TZ PST8PDT
-set random_number = `bash -c 'echo $RANDOM'`
-set today_date = "`date '+%m_%d_%y_%H_%M'`_$random_number"    # Use random number to differentiate parallel runs
+set today_date = "`date '+%m_%d_%y_%H_%M'`_$RANDOM_NUMBER"    # Use random number to differentiate parallel runs
 
 # Set this flag DOWNLOADER_UNIT_TEST so the python script get_unique_python_processes_on_system.py will run correctly.
 setenv DOWNLOADER_UNIT_TEST false
