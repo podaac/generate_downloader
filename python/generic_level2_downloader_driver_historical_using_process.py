@@ -176,6 +176,8 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
 
     num_files_read            = 0;
     num_files_downloaded      = 0;
+    num_success_downloads     = 0
+    num_failure_downloads     = 0
     time_spent_in_downloading = 0; 
     total_Bytes_in_files      = 0; 
     total_Bytes_downloaded    = 0; 
@@ -422,7 +424,7 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
             # This next function is executed if running in sequential.
 
             log_this("INFO",g_routine_name,"SINGLE_PROCESS_IN_PARENT_PROCESS:ACTIVATE:GENERIC_LEVEL2_DOWNLOADER_DRIVER_VIA_FORK_HISTORICAL:child_pid " + str(child_pid));
-            (num_files_read,total_Bytes_in_files) = generic_level2_downloader_driver_via_fork_historical(child_pipe,
+            (num_files_read,total_Bytes_in_files,successes,failures) = generic_level2_downloader_driver_via_fork_historical(child_pipe,
                                                                  num_batches_created,
                                                                  i_sleep_time_in_between_files,
                                                                  i_filelist_name,
@@ -435,6 +437,10 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
                                                                  scratch_area,
                                                                  i_today_date,
                                                                  i_test_run_flag);
+
+            # Total successes and failures
+            num_success_downloads += successes
+            num_failure_downloads += failures
 
             # If running this as a child sub process we need to exit to signify that we are done with the downloader job.
             if (child_pid == 0): 
@@ -661,6 +667,9 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
     log_this("INFO",g_routine_name,"BEGIN_PROCESSING_TIME "  + begin_processing_time);
     log_this("INFO",g_routine_name,"END_PROCESSING_TIME   "  + end_processing_time + " SECONDS " + str("{:.2f}".format(elapsed_in_seconds)) + " MINUTES " + str(elapsed_in_minutes) + " NUM_FILES " + str(num_files_read) + " OUT_OF " + str(num_sst_sst4_files));
 
+    print(f"{g_routine_name} - INFO: Number of downloads: {num_success_downloads}")
+    print(f"{g_routine_name} - INFO: Number of failed downloads: {num_failure_downloads}")
+    
     return (o_download_driver_status);
 
 #------------------------------------------------------------------------------------------------------------------------
