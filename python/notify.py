@@ -7,7 +7,6 @@ Pusblishes error message to SNS Topic.
 # Standard imports
 import datetime
 import time
-import logging
 import os
 
 # Third-party imports
@@ -17,56 +16,26 @@ import requests
 
 # Constants
 TOPIC_STRING = "batch-job-failure"
+MODULE = "notify"
 
 def notify(sigevent_type, sigevent_description, sigevent_data):
     """Handles error events."""
     
     status = 1
-    logger = get_logger()
-    log_event(sigevent_type, sigevent_description, sigevent_data, logger)
-    log_metadata = get_ecs_task_metadata(logger)
-    if sigevent_type == "ERROR": publish_event(sigevent_type, sigevent_description, sigevent_data, logger, log_metadata)
+    log_event(sigevent_type, sigevent_description, sigevent_data)
+    log_metadata = get_ecs_task_metadata()
+    if sigevent_type == "ERROR": publish_event(sigevent_type, sigevent_description, sigevent_data, log_metadata)
     return status
-    
-def get_logger():
-    """Return a formatted logger object."""
-    
-    # Create a Logger object and set log level
-    logger = logging.getLogger(__name__)
-    
-    if not logger.hasHandlers():
-        logger.setLevel(logging.DEBUG)
 
-        # Create a handler to console and set level
-        console_handler = logging.StreamHandler()
-
-        # Create a formatter and add it to the handler
-        console_format = logging.Formatter("%(asctime)s - %(module)s - %(levelname)s : %(message)s")
-        console_handler.setFormatter(console_format)
-
-        # Add handlers to logger
-        logger.addHandler(console_handler)
-
-    # Return logger
-    return logger
-
-def log_event(sigevent_type, sigevent_description, sigevent_data, logger):
+def log_event(sigevent_type, sigevent_description, sigevent_data):
     """Log event details in CloudWatch."""
     
     # Log to batch log stream
-    if sigevent_type == "WARN":
-        logger.warning(f"Job Identifier: {os.getenv('AWS_BATCH_JOB_ID')}")
-        logger.warning(f"Job Queue: {os.getenv('AWS_BATCH_JQ_NAME')}")
-        logger.warning(f"Error type: {sigevent_type}")
-        logger.warning(f"Error description: {sigevent_description}")
-        if sigevent_data != "": logger.warning(f"Error data: {sigevent_data}")
-    
-    if sigevent_type == "ERROR":    
-        logger.error(f"Job Identifier: {os.getenv('AWS_BATCH_JOB_ID')}")
-        logger.error(f"Job Queue: {os.getenv('AWS_BATCH_JQ_NAME')}")
-        logger.error(f"Error type: {sigevent_type}")
-        logger.error(f"Error description: {sigevent_description}")
-        if sigevent_data != "": logger.error(f"Error data: {sigevent_data}")
+    print(f"notify - INFO: Job Identifier: {os.getenv('AWS_BATCH_JOB_ID')}")
+    print(f"notify - INFO: Job Queue: {os.getenv('AWS_BATCH_JQ_NAME')}")
+    print(f"notify - INFO: Error type: {sigevent_type}")
+    print(f"notify - INFO: Error description: {sigevent_description}")
+    if sigevent_data != "": print(f"notify - INFO: Error data: {sigevent_data}")
     
     # Log to downloader error log stream
     logs = boto3.client("logs")
@@ -99,7 +68,7 @@ def log_event(sigevent_type, sigevent_description, sigevent_data, logger):
             },
             {
                 "timestamp": int(time.time() * 1000),
-                "message": "Downloader job ERROR encountered."
+                "message": "Downloader job error encountered."
             },
             {
                 "timestamp": int(time.time() * 1000),
@@ -127,18 +96,19 @@ def log_event(sigevent_type, sigevent_description, sigevent_data, logger):
             logStreamName=log_stream_name,
             logEvents=log_events
         )
-        logger.info(f"Logged error message to: {log_group_name}{log_stream_name}")    
+        print(f"notify - INFO: Logged error message to: {log_group_name}{log_stream_name}")    
     except botocore.exceptions.ClientError as e:
-        logger.error("Failed to log to CloudWatch.")
-        logger.error(f"Error - {e}")
+        print(f"notify - INFO: Failed to log to CloudWatch.")
+        print(f"notify - ERROR: Error - {e}")
         exit(1)
-def get_ecs_task_metadata(logger):
+
+def get_ecs_task_metadata():
     """Return log group and log stream if available from ECS task endpoint."""
     
     ecs_endpoint = os.getenv("ECS_CONTAINER_METADATA_URI_V4")
     if ecs_endpoint:
         response = requests.get(ecs_endpoint)
-        logger.info(f"ECS endpoint response: {response}.")
+        print(f"notify - INFO: ECS endpoint response: {response}.")
         response_json = response.json()
         log_group = response_json["LogOptions"]["awslogs-group"]
         log_stream = response_json["LogOptions"]["awslogs-stream"]
@@ -147,7 +117,7 @@ def get_ecs_task_metadata(logger):
         log = ""
     return log
     
-def publish_event(sigevent_type, sigevent_description, sigevent_data, logger, log_metadata):
+def publish_event(sigevent_type, sigevent_description, sigevent_data, log_metadata):
     """Publish event to SNS Topic."""
     
     sns = boto3.client("sns")
@@ -156,8 +126,8 @@ def publish_event(sigevent_type, sigevent_description, sigevent_data, logger, lo
     try:
         topics = sns.list_topics()
     except botocore.exceptions.ClientError as e:
-        logger.error("Failed to list SNS Topics.")
-        logger.error(f"Error - {e}")
+        print("notify - INFO: Failed to list SNS Topics.")
+        print(f"notify - ERROR: Error - {e}")
         exit(1)
     for topic in topics["Topics"]:
         if TOPIC_STRING in topic["TopicArn"]:
@@ -185,11 +155,11 @@ def publish_event(sigevent_type, sigevent_description, sigevent_data, logger, lo
             Subject = subject
         )
     except botocore.exceptions.ClientError as e:
-        logger.error(f"Failed to publish to SNS Topic: {topic_arn}.")
-        logger.error(f"Error - {e}")
+        print(f"notify - INFO: Failed to publish to SNS Topic: {topic_arn}.")
+        print(f"notify - ERROR: Error - {e}")
         exit(1)
     
-    logger.info(f"Message published to SNS Topic: {topic_arn}.")
+    print(f"notify - INFO: Message published to SNS Topic: {topic_arn}.")
     
 if __name__ == "__main__":
     

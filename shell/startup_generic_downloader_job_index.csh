@@ -22,6 +22,7 @@
 
 # Set the environments.
 source /app/config/downloader_config    # NET edit. (Docker container)
+set module = startup_generic_downloader.csh
 
 # Get the input.
 if ($# < 9) then
@@ -158,8 +159,20 @@ echo "    test_run_flag:                $12"
 echo ""
 echo "Log file                          $downloader_log_name"
 echo "Job name                          $JOB_FULL_NAME"
-echo "File list                         $file_list_to_download"
 echo ""
+
+if ($processing_type == "MODIS_A") then
+    set dataset = "MODIS Aqua"
+else if ($processing_type == "MODIS_T") then
+    set dataset = "MODIS Terra"
+else
+    set dataset = $processing_type
+endif
+echo "$module - INFO: Dataset: $dataset"
+echo "$module - INFO: Job identifier: $AWS_BATCH_JOB_ID"
+echo "$module - INFO: Job index: $index"
+echo "$module - INFO: JSON file: $list_name"
+echo "$module - INFO: TXT file: $file_list_to_download"
 
 # Download files in list
 set python_exe = `printenv | grep PYTHON3_EXECUTABLE_PATH | awk -F= '{print $2}'` 
@@ -167,8 +180,6 @@ if ($test_run_flag == "true") then
     echo "$python_exe $OBPG_RUNENV_PYTHON_HOME/generic_level2_downloader.py $file_list_to_download $processing_level $separator_character $processing_type $top_level_output_directory $num_files_to_download $sleep_time_in_between_files $move_filelist_file_when_done $perform_checksum_flag $today_date $JOB_FULL_NAME $test_run_flag "
     $python_exe $OBPG_RUNENV_PYTHON_HOME/generic_level2_downloader.py $file_list_to_download $separator_character $processing_type $top_level_output_directory $num_files_to_download $sleep_time_in_between_files $move_filelist_file_when_done $perform_checksum_flag $today_date  $JOB_FULL_NAME $test_run_flag
 else
-    echo "Index                         $index"
-    echo "FILE LIST TO DOWNLOAD         $file_list_to_download"
     echo "$python_exe $OBPG_RUNENV_PYTHON_HOME/generic_level2_downloader.py $file_list_to_download $processing_level $separator_character $processing_type $top_level_output_directory $num_files_to_download $sleep_time_in_between_files $move_filelist_file_when_done $perform_checksum_flag $today_date $JOB_FULL_NAME $test_run_flag | tee $downloader_log_name"
     $python_exe $OBPG_RUNENV_PYTHON_HOME/generic_level2_downloader.py $file_list_to_download $processing_level $separator_character $processing_type $top_level_output_directory $num_files_to_download $sleep_time_in_between_files $move_filelist_file_when_done $perform_checksum_flag $today_date  $JOB_FULL_NAME $test_run_flag | tee $downloader_log_name
 endif
@@ -182,7 +193,7 @@ else
 endif
 set error_file="$logging_dir/$error_filename"
 if ( -f "$error_file" ) then
-    echo "ERROR FILE REMOVAL    $error_file"
+    echo "Removing error file: $error_file"
     rm -rf $error_file    # Remove error file indicator
     echo "startup_generic_downloader_job_index.csh exiting with status of 1"
     exit(1)
@@ -194,3 +205,6 @@ if ($check == "error") then
     echo "startup_generic_downloader_job_index.csh exiting with status of 1"
     exit(1)
 endif
+
+echo "Removing log file: $downloader_log_name"
+rm -rf $downloader_log_name

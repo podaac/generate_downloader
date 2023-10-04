@@ -211,7 +211,7 @@ def write_out_error_file():
     if len(child_job) == 2:
         job_id = f"{child_job[0]}-{child_job[1]}"
     error_file = log_dir.joinpath(f"error-{job_id}.txt")
-    print(f"generic_level2_downloader, ERROR FILE: {error_file}.")
+    print(f"generic_level2_downloader, error file: {error_file}.")
     with open(error_file, 'w') as fh:
         fh.write("error")
 
@@ -313,7 +313,7 @@ if __name__ == "__main__":
         remove_netrc()
     except Exception as e:
         write_out_error_file()
-        print("ERROR encountered...")
+        print("Error encountered...")
         print(type(e))
         print(e)
         if pathlib.Path(os.getenv("NETRC_DIR")).joinpath(".netrc").exists(): remove_netrc()

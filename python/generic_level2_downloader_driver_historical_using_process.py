@@ -114,9 +114,8 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
     try:
         f = open(i_filelist_name);
     except IOError:
-        print(debug_module + "ERROR: Cannot open file " + i_filelist_name);
-        o_files_download_status = 0;
-        return(o_files_download_status);
+        print(debug_module + "ERROR: Cannot open file " + i_filelist_name + ". Program exiting");
+        sys.exit(1)
     else:
         with f:
             list_of_lines_from_download_file = f.readlines();
@@ -176,6 +175,8 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
 
     num_files_read            = 0;
     num_files_downloaded      = 0;
+    num_success_downloads     = 0
+    num_failure_downloads     = 0
     time_spent_in_downloading = 0; 
     total_Bytes_in_files      = 0; 
     total_Bytes_downloaded    = 0; 
@@ -422,7 +423,7 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
             # This next function is executed if running in sequential.
 
             log_this("INFO",g_routine_name,"SINGLE_PROCESS_IN_PARENT_PROCESS:ACTIVATE:GENERIC_LEVEL2_DOWNLOADER_DRIVER_VIA_FORK_HISTORICAL:child_pid " + str(child_pid));
-            (num_files_read,total_Bytes_in_files) = generic_level2_downloader_driver_via_fork_historical(child_pipe,
+            (num_files_read,total_Bytes_in_files,successes,failures) = generic_level2_downloader_driver_via_fork_historical(child_pipe,
                                                                  num_batches_created,
                                                                  i_sleep_time_in_between_files,
                                                                  i_filelist_name,
@@ -435,6 +436,10 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
                                                                  scratch_area,
                                                                  i_today_date,
                                                                  i_test_run_flag);
+
+            # Total successes and failures
+            num_success_downloads += successes
+            num_failure_downloads += failures
 
             # If running this as a child sub process we need to exit to signify that we are done with the downloader job.
             if (child_pid == 0): 
@@ -583,7 +588,6 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
         sigevent_type = "ERROR";
         sigevent_description = "MONITOR_JOB_COMPLETION:FAILED_SOME_DOWNLOAD_JOBS_MAY_NOT_COMPLETE_YET NUM_INCOMPLETE_JOBS " + str(o_num_incompleted_jobs) + " OUT_OF " + str(num_filenames_dispatched_for_download_total) + " o_total_seconds_waited " + str(o_total_seconds_waited); 
         sigevent_data = "Please inspect directory " + o_hidden_download_directory + " for stale file associated with a download.";
-        print(debug_module + "ERROR:" + sigevent_description);
         notify(sigevent_type, sigevent_description, sigevent_data)
 
     # Close the child pipe if no sub process started (i.e. not running in parallel) and it is still open.
@@ -661,6 +665,9 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
     log_this("INFO",g_routine_name,"BEGIN_PROCESSING_TIME "  + begin_processing_time);
     log_this("INFO",g_routine_name,"END_PROCESSING_TIME   "  + end_processing_time + " SECONDS " + str("{:.2f}".format(elapsed_in_seconds)) + " MINUTES " + str(elapsed_in_minutes) + " NUM_FILES " + str(num_files_read) + " OUT_OF " + str(num_sst_sst4_files));
 
+    print(f"{g_routine_name} - INFO: Number of downloads: {num_success_downloads}")
+    print(f"{g_routine_name} - INFO: Number of failed downloads: {num_failure_downloads}")
+    
     return (o_download_driver_status);
 
 #------------------------------------------------------------------------------------------------------------------------
@@ -956,7 +963,7 @@ def get_names_of_same_time(list_of_files_to_download,
                     which_level_search_successful = ".L4";
                 except: # catch *all* exceptions
                     print(debug_module + "ERROR: This script only support .L2, .L3, or .L4 in the URL.  Cannot continue.");
-                    print(debug_module + "ERROR: Current line " + one_line);
+                    print(debug_module + "INFO: Current line " + one_line);
                     exit(0);
 
         # Because the granule name may be shorter than the example_token, we have to check to see if it indeed is shorter.
@@ -1178,7 +1185,7 @@ def inspect_running_subprocesses_for_completion(i_master_pipe,
 
         # Do a sanity check and print a warning if the status (2nd token) is "DOWNLOAD_FAILURE"
         if (tokens[DOWNLOAD_STATUS_INDEX] == "DOWNLOAD_FAILURE"):
-            log_this("ERROR",debug_module,"FILE_DOWNLOADED " + tokens[DOWNLOAD_NAME_INDEX] + " FILE_STATUS " + tokens[DOWNLOAD_STATUS_INDEX]);
+            log_this("INFO",debug_module,"FILE_DOWNLOADED " + tokens[DOWNLOAD_NAME_INDEX] + " FILE_STATUS " + tokens[DOWNLOAD_STATUS_INDEX]);
 
         # Parse the line processed to get the time it took to download that particular file.
         o_time_per_batch = o_time_per_batch + float(tokens[DOWNLOAD_TIME_INDEX]);

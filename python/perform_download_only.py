@@ -246,7 +246,7 @@ def perform_download_only(instanceOf, *args):
 
             # Go to sleep to give the other process time to finish:
 
-            log_this("ERROR",debug_module,"FILE_DOWNLOADING" + " " + i_temporary_location_of_downloaded_file + " " + "SLEEPING " + str(CONST_PERFORM_DOWNLOAD_ONLY_MAX_SLEEP_IN_BETWEEN_WAITS) + " " + "SECONDS");
+            log_this("INFO",debug_module,"FILE_DOWNLOADING" + " " + i_temporary_location_of_downloaded_file + " " + "SLEEPING " + str(CONST_PERFORM_DOWNLOAD_ONLY_MAX_SLEEP_IN_BETWEEN_WAITS) + " " + "SECONDS");
             time.sleep(CONST_PERFORM_DOWNLOAD_ONLY_MAX_SLEEP_IN_BETWEEN_WAITS);
             
         except requests.exceptions.ConnectionError as e:
@@ -258,7 +258,7 @@ def perform_download_only(instanceOf, *args):
 
             # Go to sleep to give the other process time to finish:
 
-            log_this("ERROR",debug_module,"FILE_DOWNLOADING" + " " + i_temporary_location_of_downloaded_file + " " + "SLEEPING " + str(CONST_PERFORM_DOWNLOAD_ONLY_MAX_SLEEP_IN_BETWEEN_WAITS) + " " + "SECONDS");
+            log_this("INFO",debug_module,"FILE_DOWNLOADING" + " " + i_temporary_location_of_downloaded_file + " " + "SLEEPING " + str(CONST_PERFORM_DOWNLOAD_ONLY_MAX_SLEEP_IN_BETWEEN_WAITS) + " " + "SECONDS");
             time.sleep(CONST_PERFORM_DOWNLOAD_ONLY_MAX_SLEEP_IN_BETWEEN_WAITS);
 
         except requests.exceptions.HTTPError as e:
@@ -270,14 +270,14 @@ def perform_download_only(instanceOf, *args):
 
             # Go to sleep to give the other process time to finish:
 
-            log_this("ERROR",debug_module,"FILE_DOWNLOADING" + " " + i_temporary_location_of_downloaded_file + " " + "SLEEPING " + str(CONST_PERFORM_DOWNLOAD_ONLY_MAX_SLEEP_IN_BETWEEN_WAITS) + " " + "SECONDS");
+            log_this("INFO",debug_module,"FILE_DOWNLOADING" + " " + i_temporary_location_of_downloaded_file + " " + "SLEEPING " + str(CONST_PERFORM_DOWNLOAD_ONLY_MAX_SLEEP_IN_BETWEEN_WAITS) + " " + "SECONDS");
             time.sleep(CONST_PERFORM_DOWNLOAD_ONLY_MAX_SLEEP_IN_BETWEEN_WAITS);
 
     if (attempt_count <= CONST_PERFORM_DOWNLOAD_ONLY_MAX_ATTEMPTS):
         log_this("INFO",debug_module,"SUCCESS_FILE_DOWNLOADED " + i_temporary_location_of_downloaded_file + " DOWNLOAD_ELAPSED " + str('{:5.2f}'.format(time_download)) + " ATTEMPT_COUNT " +  str('{:03d}'.format(attempt_count)));
     else:
         o_download_status = 0;
-        log_this("ERROR",debug_module,"FAILURE_FILE_DOWNLOADED " + i_temporary_location_of_downloaded_file + " DOWNLOAD_ELAPSED " + str('{:5.2f}'.format(time_download)) + " ATTEMPT_COUNT " + str('{:03d}'.format(attempt_count)));
+        log_this("INFO",debug_module,"FAILURE_FILE_DOWNLOADED " + i_temporary_location_of_downloaded_file + " DOWNLOAD_ELAPSED " + str('{:5.2f}'.format(time_download)) + " ATTEMPT_COUNT " + str('{:03d}'.format(attempt_count)));
 
     if (settings.g_use_file_locking_mechanism_flag):
         from nfs_unlock_file import nfs_unlock_file;
