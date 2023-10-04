@@ -112,7 +112,7 @@ def handle_downloader_error_historical(i_full_pathname_to_download,
                 else:
                     with f:
                         f.write(i_full_pathname_to_download + " " + i_checksum_value + "\n");
-                log_this("ERROR",g_routine_name,"INCOMPLETE_DOWNLOAD_FILE_SAVED " + i_full_pathname_to_download + " TO " + o_incomplete_filename);
+                log_this("INFO",g_routine_name,"INCOMPLETE_DOWNLOAD_FILE_SAVED " + i_full_pathname_to_download + " TO " + o_incomplete_filename);
                 o_unlock_status = nfs_unlock_file(o_the_lock,
                                                   o_incomplete_filename);
         # end if (create_incomplete_file_flag == 1)

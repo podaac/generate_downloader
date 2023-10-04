@@ -20,10 +20,11 @@ def log_this(i_log_type,      # Possible types are {INFO,WARN,ERROR}
 
     # Thu Oct 13 00:35:30 2016 INFO [modis_level2_combiner] MESSAGE
 
-    localtime = get_local_pdt_time();
-    now_is = strftime("%a %b %d %H:%M:%S %Y",localtime);
+    # localtime = get_local_pdt_time();
+    # now_is = strftime("%a %b %d %H:%M:%S %Y",localtime);
 
-    print(now_is + " " + i_log_type + " [" + i_function_name + "] " + i_log_message);
+    # print(now_is + " " + i_log_type + " [" + i_function_name + "] " + i_log_message);
+    print(f"{i_function_name} - {i_log_type}: {i_log_message}")
 
 if __name__ == "__main__":
 

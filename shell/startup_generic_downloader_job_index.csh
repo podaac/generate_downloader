@@ -193,7 +193,7 @@ else
 endif
 set error_file="$logging_dir/$error_filename"
 if ( -f "$error_file" ) then
-    echo "ERROR FILE REMOVAL    $error_file"
+    echo "Removing error file: $error_file"
     rm -rf $error_file    # Remove error file indicator
     echo "startup_generic_downloader_job_index.csh exiting with status of 1"
     exit(1)
@@ -205,3 +205,6 @@ if ($check == "error") then
     echo "startup_generic_downloader_job_index.csh exiting with status of 1"
     exit(1)
 endif
+
+echo "Removing log file: $downloader_log_name"
+rm -rf $downloader_log_name

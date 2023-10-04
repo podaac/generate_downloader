@@ -114,9 +114,8 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
     try:
         f = open(i_filelist_name);
     except IOError:
-        print(debug_module + "ERROR: Cannot open file " + i_filelist_name);
-        o_files_download_status = 0;
-        return(o_files_download_status);
+        print(debug_module + "ERROR: Cannot open file " + i_filelist_name + ". Program exiting");
+        sys.exit(1)
     else:
         with f:
             list_of_lines_from_download_file = f.readlines();
@@ -589,7 +588,6 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
         sigevent_type = "ERROR";
         sigevent_description = "MONITOR_JOB_COMPLETION:FAILED_SOME_DOWNLOAD_JOBS_MAY_NOT_COMPLETE_YET NUM_INCOMPLETE_JOBS " + str(o_num_incompleted_jobs) + " OUT_OF " + str(num_filenames_dispatched_for_download_total) + " o_total_seconds_waited " + str(o_total_seconds_waited); 
         sigevent_data = "Please inspect directory " + o_hidden_download_directory + " for stale file associated with a download.";
-        print(debug_module + "ERROR:" + sigevent_description);
         notify(sigevent_type, sigevent_description, sigevent_data)
 
     # Close the child pipe if no sub process started (i.e. not running in parallel) and it is still open.
@@ -965,7 +963,7 @@ def get_names_of_same_time(list_of_files_to_download,
                     which_level_search_successful = ".L4";
                 except: # catch *all* exceptions
                     print(debug_module + "ERROR: This script only support .L2, .L3, or .L4 in the URL.  Cannot continue.");
-                    print(debug_module + "ERROR: Current line " + one_line);
+                    print(debug_module + "INFO: Current line " + one_line);
                     exit(0);
 
         # Because the granule name may be shorter than the example_token, we have to check to see if it indeed is shorter.
@@ -1187,7 +1185,7 @@ def inspect_running_subprocesses_for_completion(i_master_pipe,
 
         # Do a sanity check and print a warning if the status (2nd token) is "DOWNLOAD_FAILURE"
         if (tokens[DOWNLOAD_STATUS_INDEX] == "DOWNLOAD_FAILURE"):
-            log_this("ERROR",debug_module,"FILE_DOWNLOADED " + tokens[DOWNLOAD_NAME_INDEX] + " FILE_STATUS " + tokens[DOWNLOAD_STATUS_INDEX]);
+            log_this("INFO",debug_module,"FILE_DOWNLOADED " + tokens[DOWNLOAD_NAME_INDEX] + " FILE_STATUS " + tokens[DOWNLOAD_STATUS_INDEX]);
 
         # Parse the line processed to get the time it took to download that particular file.
         o_time_per_batch = o_time_per_batch + float(tokens[DOWNLOAD_TIME_INDEX]);
