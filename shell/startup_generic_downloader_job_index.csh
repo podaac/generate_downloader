@@ -172,7 +172,8 @@ echo "$module - INFO: Dataset: $dataset"
 echo "$module - INFO: Job identifier: $AWS_BATCH_JOB_ID"
 echo "$module - INFO: Job index: $index"
 echo "$module - INFO: JSON file: $list_name"
-echo "$module - INFO: TXT file: $file_list_to_download"
+set txt_file = `basename $file_list_to_download`
+echo "$module - INFO: TXT file: $txt_file"
 
 # Download files in list
 set python_exe = `printenv | grep PYTHON3_EXECUTABLE_PATH | awk -F= '{print $2}'` 
