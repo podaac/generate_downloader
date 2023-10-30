@@ -31,6 +31,7 @@
 
 import os
 import sys
+import pathlib
 import time
 
 from time import gmtime, strftime;
@@ -40,6 +41,7 @@ from handle_downloader_error_historical import handle_downloader_error_historica
 from log_this import log_this;
 from perform_download_and_move          import perform_download_and_move;
 from preparation_for_downloader         import preparation_for_downloader;
+from write_final_log                    import write_final_log
 
 import settings
 
@@ -247,6 +249,7 @@ def generic_level2_downloader_driver_via_fork_historical(i_pipe_writer,
             size_of_sst_file_in_bytes  = os.stat(final_location_of_downloaded_file).st_size;
 
             print(f"{g_routine_name} - INFO: Processed: {one_line}")
+            write_final_log(f"processed: {one_line}")
             log_this("INFO",g_routine_name,"DOWNLOAD_INFO: " + "FILE_DOWNLOADED " + final_location_of_downloaded_file + " FILE_SIZE " + str(size_of_sst_file_in_bytes) + " TIME_ELAPSED_DOWNLOAD " + str('{:.2f}'.format(time_elapsed_download)));
             log_this("INFO",g_routine_name,"DOWNLOAD_INFO: " + "BATCH_NUMBER "    + str("{:03d}".format(i_batch_number)) + " FILE_COUNT " + str("{:05d}".format(file_count)) + " FILE_DOWNLOADED " + final_location_of_downloaded_file + " DOWNLOAD_SUCCESS " + str('{:.2f}'.format(time_elapsed_download)) + " " + str(size_of_sst_file_in_bytes));
             o_total_Bytes_in_files += size_of_sst_file_in_bytes; 
@@ -271,6 +274,7 @@ def generic_level2_downloader_driver_via_fork_historical(i_pipe_writer,
             if (i_pipe_writer is not None):
                 i_pipe_writer.write(final_location_of_downloaded_file + " DOWNLOAD_FAILURE " + str('{:.2f}'.format(time_elapsed_download)) + " " + str(size_of_sst_file_in_bytes) + "\n");
             num_failure_downloads += 1
+            write_final_log(f"failed_download: {pathlib.Path(final_location_of_downloaded_file).name}")
         # end if ((download_status == 1) and (os.path.isfile(final_location_of_downloaded_file)))
 
         # Go to sleep if user request to sleep for a bit.

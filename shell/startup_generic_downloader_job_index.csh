@@ -21,7 +21,7 @@
 ################################################################################################################################################################
 
 # Set the environments.
-source /app/config/downloader_config    # NET edit. (Docker container)
+source /app/config/downloader_config
 set module = startup_generic_downloader.csh
 
 # Get the input.
@@ -175,6 +175,10 @@ echo "$module - INFO: JSON file: $list_name"
 set txt_file = `basename $file_list_to_download`
 echo "$module - INFO: TXT file: $txt_file"
 
+# Echo to final log message
+setenv FINAL_LOG_MESSAGE $SCRATCH_AREA/final_log_message_$AWS_BATCH_JOB_ID.txt
+echo "execution_data: dataset: $dataset - job_id: $AWS_BATCH_JOB_ID - job_index: $index - json_file: $list_name - txt_file: $txt_file" >> $FINAL_LOG_MESSAGE
+
 # Download files in list
 set python_exe = `printenv | grep PYTHON3_EXECUTABLE_PATH | awk -F= '{print $2}'` 
 if ($test_run_flag == "true") then
@@ -200,6 +204,9 @@ if ( -f "$error_file" ) then
     exit(1)
 endif
 
+# Print final log message
+$OBPG_RUNENV_PYTHON_HOME/print_final_log.py
+
 # Check for NetCDF: HDF error
 set check=`$OBPG_RUNENV_PYTHON_HOME/check_netcdf_error.py $downloader_log_name`
 if ($check == "error") then
@@ -207,5 +214,6 @@ if ($check == "error") then
     exit(1)
 endif
 
+# Remove log file
 echo "Removing log file: $downloader_log_name"
 rm -rf $downloader_log_name

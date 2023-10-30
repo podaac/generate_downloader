@@ -38,6 +38,7 @@ from get_local_time                 import get_local_pdt_time;
 from log_this import log_this;
 from move_to_processed_download_directory import move_to_processed_download_directory;
 from notify import notify
+from write_final_log import write_final_log
 
 #------------------------------------------------------------------------------------------------------------------------
 def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
@@ -666,7 +667,9 @@ def generic_level2_downloader_driver_historical_using_process(i_filelist_name,
     log_this("INFO",g_routine_name,"END_PROCESSING_TIME   "  + end_processing_time + " SECONDS " + str("{:.2f}".format(elapsed_in_seconds)) + " MINUTES " + str(elapsed_in_minutes) + " NUM_FILES " + str(num_files_read) + " OUT_OF " + str(num_sst_sst4_files));
 
     print(f"{g_routine_name} - INFO: Number of downloads: {num_success_downloads}")
+    write_final_log(f"number_downloads: {num_success_downloads}")
     print(f"{g_routine_name} - INFO: Number of failed downloads: {num_failure_downloads}")
+    write_final_log(f"number_failed_downloads: {num_failure_downloads}")
     
     return (o_download_driver_status);
 
