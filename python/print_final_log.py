@@ -39,7 +39,7 @@ def print_final_log():
     
     # Print final log message and remove temp log file
     logger.info(final_log_message)
-    # log_file.unlink()
+    log_file.unlink()
     
 def get_logger():
     """Return a formatted logger object."""
