@@ -31,6 +31,7 @@
 
 import os
 import sys
+import pathlib
 import time
 
 from time import gmtime, strftime;
@@ -40,6 +41,7 @@ from handle_downloader_error_historical import handle_downloader_error_historica
 from log_this import log_this;
 from perform_download_and_move          import perform_download_and_move;
 from preparation_for_downloader         import preparation_for_downloader;
+from write_final_log                    import write_final_log
 
 import settings
 
@@ -132,6 +134,8 @@ def generic_level2_downloader_driver_via_fork_historical(i_pipe_writer,
         print(debug_module + "many_lines) ",many_lines);
 
     num_files_downloaded       = 0;
+    num_success_downloads = 0
+    num_failure_downloads = 0
     num_sst_sst4_files         = len(many_lines);
     file_count                 = 0;
     time_spent_in_downloading = 0.0;
@@ -244,6 +248,8 @@ def generic_level2_downloader_driver_via_fork_historical(i_pipe_writer,
             #
             size_of_sst_file_in_bytes  = os.stat(final_location_of_downloaded_file).st_size;
 
+            print(f"{g_routine_name} - INFO: Processed: {one_line}")
+            write_final_log(f"processed: {one_line}")
             log_this("INFO",g_routine_name,"DOWNLOAD_INFO: " + "FILE_DOWNLOADED " + final_location_of_downloaded_file + " FILE_SIZE " + str(size_of_sst_file_in_bytes) + " TIME_ELAPSED_DOWNLOAD " + str('{:.2f}'.format(time_elapsed_download)));
             log_this("INFO",g_routine_name,"DOWNLOAD_INFO: " + "BATCH_NUMBER "    + str("{:03d}".format(i_batch_number)) + " FILE_COUNT " + str("{:05d}".format(file_count)) + " FILE_DOWNLOADED " + final_location_of_downloaded_file + " DOWNLOAD_SUCCESS " + str('{:.2f}'.format(time_elapsed_download)) + " " + str(size_of_sst_file_in_bytes));
             o_total_Bytes_in_files += size_of_sst_file_in_bytes; 
@@ -261,11 +267,14 @@ def generic_level2_downloader_driver_via_fork_historical(i_pipe_writer,
             # Keep track of how many files we have downloaded for this batch.
             files_downloader_per_batch = files_downloader_per_batch + 1;
             num_files_downloaded       = num_files_downloaded       + 1;
+            num_success_downloads += 1
         else:
             # Even if the download was a failure, we still have to write to the pipe since it needs to be read by the parent program.
             log_this("INFO",g_routine_name,"WRITE_TO_PIPE: " + final_location_of_downloaded_file + " DOWNLOAD_FAILURE " + str('{:.2f}'.format(time_elapsed_download)) + " " + str(size_of_sst_file_in_bytes));
             if (i_pipe_writer is not None):
                 i_pipe_writer.write(final_location_of_downloaded_file + " DOWNLOAD_FAILURE " + str('{:.2f}'.format(time_elapsed_download)) + " " + str(size_of_sst_file_in_bytes) + "\n");
+            num_failure_downloads += 1
+            write_final_log(f"failed_download: {pathlib.Path(final_location_of_downloaded_file).name}")
         # end if ((download_status == 1) and (os.path.isfile(final_location_of_downloaded_file)))
 
         # Go to sleep if user request to sleep for a bit.
@@ -295,7 +304,7 @@ def generic_level2_downloader_driver_via_fork_historical(i_pipe_writer,
     end_processing_time = strftime("%a %b %d %H:%M:%S %Y",gmtime());
     log_this("INFO",g_routine_name,"BATCH_NUMBER " + str("{:03d}".format(i_batch_number)) + " END_PROCESSING_TIME " + end_processing_time);
 
-    return(num_files_downloaded,o_total_Bytes_in_files);
+    return(num_files_downloaded,o_total_Bytes_in_files,num_success_downloads,num_failure_downloads);
 
 if __name__ == "__main__":
     debug_module = "generic_level2_downloader_driver_via_fork_historical:";
