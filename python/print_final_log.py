@@ -32,7 +32,7 @@ def print_final_log():
         if "failed_download" in line and "number_failed_downloads" not in line: failed_downloads.append(line.split("failed_download: ")[-1])
         if "number_failed_downloads" in line: execution_data += f" - {line}"
     
-    final_log_message = ""
+    final_log_message = "final_log: "
     if execution_data: final_log_message += f"{execution_data} - "
     if len(processed) > 0: final_log_message += f"processed: {', '.join(processed)} - "
     if len(failed_downloads) > 0: final_log_message += f"failed_downloads: {', '.join(failed_downloads)} - "
