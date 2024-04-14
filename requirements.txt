@@ -5,7 +5,7 @@ certifi==2023.7.22
 cftime==1.6.2
 charset-normalizer==3.0.1
 flufl.lock==7.1.1
-idna==3.4
+idna==3.7
 jmespath==1.0.1
 netCDF4==1.6.2
 numpy==1.24.2
