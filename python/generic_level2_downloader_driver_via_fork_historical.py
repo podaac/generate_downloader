@@ -248,7 +248,7 @@ def generic_level2_downloader_driver_via_fork_historical(i_pipe_writer,
             #
             size_of_sst_file_in_bytes  = os.stat(final_location_of_downloaded_file).st_size;
 
-            print(f"{g_routine_name} - INFO: Processed: {one_line}")
+            print(f"{g_routine_name} - INFO : Processed: {one_line}")
             write_final_log(f"processed: {one_line}")
             log_this("INFO",g_routine_name,"DOWNLOAD_INFO: " + "FILE_DOWNLOADED " + final_location_of_downloaded_file + " FILE_SIZE " + str(size_of_sst_file_in_bytes) + " TIME_ELAPSED_DOWNLOAD " + str('{:.2f}'.format(time_elapsed_download)));
             log_this("INFO",g_routine_name,"DOWNLOAD_INFO: " + "BATCH_NUMBER "    + str("{:03d}".format(i_batch_number)) + " FILE_COUNT " + str("{:05d}".format(file_count)) + " FILE_DOWNLOADED " + final_location_of_downloaded_file + " DOWNLOAD_SUCCESS " + str('{:.2f}'.format(time_elapsed_download)) + " " + str(size_of_sst_file_in_bytes));
