@@ -1,6 +1,6 @@
-# Stage 0 - Create from Python 3.10-alpine3.15 image
-# FROM python:3.10-alpine3.15 as stage0
-FROM python:3.10.13-slim-bullseye 
+# Stage 0 - Create from python:3.12-slim-bookworm image
+# FROM python:3.12-slim-bookworm as stage0
+FROM python:3.12-slim-bookworm
 RUN apt update && apt install -y bash tcsh python3-venv build-essential netcdf-bin procps jq
 
 # Stage 1 - Copy Generate code
