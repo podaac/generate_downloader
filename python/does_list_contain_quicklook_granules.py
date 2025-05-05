@@ -31,6 +31,7 @@ def get_actual_date_from_year_doy(i_filename,i_year,i_doy):
 
     if 'AQUA_MODIS'  in i_filename or \
        'TERRA_MODIS' in i_filename or \
+       'JPSS1_VIIRS'  in i_filename or \
        'SNPP_VIIRS'  in i_filename:
         new_format_flag = True;
 
@@ -197,6 +198,7 @@ def does_list_contain_quicklook_granules(i_filelist_name,
         # Do one final check to see if the name contains these tokens.
         if 'AQUA_MODIS'  in filename_only or \
            'TERRA_MODIS' in filename_only or \
+           'JPSS1_VIIRS' in filename_only or \
            'SNPP_VIIRS'  in filename_only:
            if '.NRT' in filename_only:
                 found_quicklook_flag = 1;
