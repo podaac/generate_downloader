@@ -40,6 +40,10 @@ data "aws_iam_policy" "aws_batch_job_policy" {
   name = "${var.prefix}-batch-job-policy"
 }
 
+data "aws_iam_role" "batch_ecs_execution_role" {
+  name = "${var.prefix}-batch-ecs-execution-role"
+}
+
 data "aws_security_groups" "vpc_default_sg" {
   filter {
     name   = "group-name"
