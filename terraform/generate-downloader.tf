@@ -6,6 +6,7 @@ resource "aws_batch_job_definition" "generate_batch_jd_downloader" {
   {
     "image": "${data.aws_ecr_repository.downloader.repository_url}:latest",
     "jobRoleArn": "${aws_iam_role.batch_job_role_downloader.arn}",
+    "executionRoleArn": "${aws_iam_role.batch_ecs_execution_role.arn}",
     "logConfiguration": {
         "logDriver" : "awslogs",
         "options": {
@@ -28,8 +29,8 @@ resource "aws_batch_job_definition" "generate_batch_jd_downloader" {
         }
     ],
     "resourceRequirements" : [
-        { "type": "MEMORY", "value": "1024"},
-        { "type": "VCPU", "value": "1024" }
+        { "type": "MEMORY", "value": "2048"},
+        { "type": "VCPU", "value": "1" }
     ],
     "volumes": [
         {
@@ -49,7 +50,7 @@ resource "aws_batch_job_definition" "generate_batch_jd_downloader" {
     ]
   }
   CONTAINER_PROPERTIES
-  platform_capabilities = ["EC2"]
+  platform_capabilities = ["FARGATE"]
   propagate_tags        = true
   retry_strategy {
     attempts = 3
