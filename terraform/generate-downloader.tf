@@ -6,7 +6,7 @@ resource "aws_batch_job_definition" "generate_batch_jd_downloader" {
   {
     "image": "${data.aws_ecr_repository.downloader.repository_url}:latest",
     "jobRoleArn": "${aws_iam_role.batch_job_role_downloader.arn}",
-    "executionRoleArn": "${aws_iam_role.batch_ecs_execution_role.arn}",
+    "executionRoleArn": "${data.aws_iam_role.batch_ecs_execution_role.arn}",
     "logConfiguration": {
         "logDriver" : "awslogs",
         "options": {
