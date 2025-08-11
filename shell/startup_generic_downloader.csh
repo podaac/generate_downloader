@@ -101,6 +101,9 @@ set names_to_look_for = "";
 if ($processing_type == "VIIRS") then
      set names_to_look_for = "viirs_filelist.txt*";
 endif 
+if ($processing_type == "JPSS1") then
+     set names_to_look_for = "jpss1_filelist.txt*";
+endif 
 
 if ($processing_type == "MODIS_A") then
      set names_to_look_for = "modis_aqua_filelist.txt*";
@@ -254,6 +257,14 @@ foreach file_list_to_download (`cat $total_temporary_list_filename`)
         setenv JOB_DIRECTORY $scratch/viirs_level2_download_processes    # NET edit.
         if ($processing_level == "L2") then 
             set name_snippet = "viirs_level2"
+        endif
+    endif
+    if $processing_type == 'JPSS1' then
+        echo "$python_exe $OBPG_RUNENV_PYTHON_HOME/get_unique_python_processes_on_system.py generic_level2_downloader $processing_level JPSS1"
+        set num_processes_currently_running = `$python_exe $OBPG_RUNENV_PYTHON_HOME/get_unique_python_processes_on_system.py generic_level2_downloader $processing_level JPSS1`
+        setenv JOB_DIRECTORY $scratch/jpss1_level2_download_processes    # NET edit.
+        if ($processing_level == "L2") then 
+            set name_snippet = "jpss1_level2"
         endif
     endif
     # If running MODIS_A, only check for MODIS_A processes.

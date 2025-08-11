@@ -1445,11 +1445,11 @@ def parse_name_for_time_fields(i_filename):
     potential_hour_portion = i_filename[8:10];
 
     if i_filename.startswith('AQUA_MODIS') or i_filename.startswith('TERRA_MODIS') or \
-       i_filename.startswith('SNPP_VIIRS'):
+       i_filename.startswith('SNPP_VIIRS') or i_filename.startswith('JPSS1_VIIRS'):
            # It is awkward to parse for the o_stream_type_field because VIIRS does not start with 'V'
            if i_filename.startswith('AQUA_MODIS') or i_filename.startswith('AQUA_TERRA'):
                o_stream_type_field = i_filename[0:1];
-           if i_filename.startswith('SNPP_VIIRS'): 
+           if i_filename.startswith('SNPP_VIIRS') or i_filename.startswith('JPSS1_VIIRS'): 
                o_stream_type_field = 'V';
            # Split the file name so we can get to the time field SNPP_VIIRS.2019176T235400.L2.SST.nc
            name_fields_array = i_filename.split(".");

@@ -152,7 +152,7 @@ def validate_input(i_filelist_name,
     else:
       if (debug_mode):
         print(g_debug_module + "INFO: Is a valid value i_separator_character ",i_separator_character);
-    if (i_processing_type not in ['VIIRS','MODIS_A','MODIS_T','AQUARIUS']):
+    if (i_processing_type not in ['VIIRS','MODIS_A','MODIS_T','AQUARIUS','JPSS1']):
         print(g_debug_module + "ERROR: Not a valid value i_processing_type",i_processing_type);
         error_found_flag = True;
     else:

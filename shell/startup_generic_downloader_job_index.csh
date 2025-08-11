@@ -22,29 +22,29 @@
 
 # Set the environments.
 source /app/config/downloader_config
-set module = startup_generic_downloader.csh
+set module = startup_generic_downloader_job_index.csh
 
 # Get the input.
 if ($# < 9) then
 echo $#
-    echo "startup_generic_downloader:ERROR, You must specify at least 10 arguments: list_directory file_list_to_download job_index separator_character processing_type top_level_output_directory num_files_to_download sleep_time_in_between_files move_filelist_file_when_done"
-    echo "startup_generic_downloader:Usage:"
+    echo "startup_generic_downloader_job_index:ERROR, You must specify at least 10 arguments: list_directory file_list_to_download job_index separator_character processing_type top_level_output_directory num_files_to_download sleep_time_in_between_files move_filelist_file_when_done"
+    echo "startup_generic_downloader_job_index:Usage:"
     echo ""
-    echo "    source startup_generic_downloader.csh ~/scratch/viirs_level2_download_list/list.txt    0 L2 SPACE VIIRS    /data/dev/scratch/qchau/IO/data 1    0 no  no"
-    echo "    source startup_generic_downloader.csh ~/scratch/modis_level2_download_list/list.txt    0 L2 SPACE MODIS_A  /data/dev/scratch/qchau/IO/data 1    0 no  no"
-    echo "    source startup_generic_downloader.csh ~/scratch/modis_level2_download_list/list.txt    0 L2 SPACE MODIS_T  /data/dev/scratch/qchau/IO/data 1    0 no  no"
-    echo "    source startup_generic_downloader.csh ~/scratch/modis_level3_download_list/list.txt    0 L3 SPACE MODIS_A  /data/dev/scratch/qchau/IO/data 1    0 no  no"
-    echo "    source startup_generic_downloader.csh ~/scratch/modis_level3_download_list/list.txt    0 L3 SPACE MODIS_T  /data/dev/scratch/qchau/IO/data 1    0 no  no"
+    echo "    source startup_generic_downloader_job_index.csh ~/scratch/viirs_level2_download_list/list.txt    0 L2 SPACE VIIRS    /data/dev/scratch/qchau/IO/data 1    0 no  no"
+    echo "    source startup_generic_downloader_job_index.csh ~/scratch/modis_level2_download_list/list.txt    0 L2 SPACE MODIS_A  /data/dev/scratch/qchau/IO/data 1    0 no  no"
+    echo "    source startup_generic_downloader_job_index.csh ~/scratch/modis_level2_download_list/list.txt    0 L2 SPACE MODIS_T  /data/dev/scratch/qchau/IO/data 1    0 no  no"
+    echo "    source startup_generic_downloader_job_index.csh ~/scratch/modis_level3_download_list/list.txt    0 L3 SPACE MODIS_A  /data/dev/scratch/qchau/IO/data 1    0 no  no"
+    echo "    source startup_generic_downloader_job_index.csh ~/scratch/modis_level3_download_list/list.txt    0 L3 SPACE MODIS_T  /data/dev/scratch/qchau/IO/data 1    0 no  no"
     echo ""
-    echo "    source startup_generic_downloader.csh ~/scratch/viirs_level2_download_list/list.txt    0 L2 SPACE VIIRS    /data/dev/scratch/qchau/IO/data 5    0 no  no"
-    echo "    source startup_generic_downloader.csh ~/scratch/modis_level2_download_list/list.txt    0 L2 SPACE MODIS_A  /data/dev/scratch/qchau/IO/data 5    0 no  no"
-    echo "    source startup_generic_downloader.csh ~/scratch/modis_level2_download_list/list.txt    0 L2 SPACE MODIS_T  /data/dev/scratch/qchau/IO/data 5    0 no  no"
-    echo "    source startup_generic_downloader.csh ~/scratch/modis_level3_download_list/list.txt    0 L3 SPACE MODIS_T  /data/dev/scratch/qchau/IO/data 5    0 no  no"
-    echo "    source startup_generic_downloader.csh ~/scratch/modis_level3_download_list/list.txt    0 L3 SPACE MODIS_T  /data/dev/scratch/qchau/IO/data 5    0 no  no"
+    echo "    source startup_generic_downloader_job_index.csh ~/scratch/viirs_level2_download_list/list.txt    0 L2 SPACE VIIRS    /data/dev/scratch/qchau/IO/data 5    0 no  no"
+    echo "    source startup_generic_downloader_job_index.csh ~/scratch/modis_level2_download_list/list.txt    0 L2 SPACE MODIS_A  /data/dev/scratch/qchau/IO/data 5    0 no  no"
+    echo "    source startup_generic_downloader_job_index.csh ~/scratch/modis_level2_download_list/list.txt    0 L2 SPACE MODIS_T  /data/dev/scratch/qchau/IO/data 5    0 no  no"
+    echo "    source startup_generic_downloader_job_index.csh ~/scratch/modis_level3_download_list/list.txt    0 L3 SPACE MODIS_T  /data/dev/scratch/qchau/IO/data 5    0 no  no"
+    echo "    source startup_generic_downloader_job_index.csh ~/scratch/modis_level3_download_list/list.txt    0 L3 SPACE MODIS_T  /data/dev/scratch/qchau/IO/data 5    0 no  no"
     exit
 endif
 
-# The parameters for startup_generic_downloader.csh are:
+# The parameters for startup_generic_downloader_job_index.csh are:
 #
 #  1 = list_directory
 #  2 = job_index 
@@ -118,6 +118,11 @@ if $processing_type == 'VIIRS' then
     setenv JOB_DIRECTORY $scratch/viirs_level2_download_processes
     set name_snippet = "viirs_level2"
 endif
+if $processing_type == 'JPSS1' then
+    setenv JOB_DIRECTORY $scratch/jpss1_level2_download_processes
+    set name_snippet = "jpss1_level2"
+endif
+
 
 # Log name
 set downloader_log_name = "$log_top_level_directory/$name_snippet""_${processing_type}_downloader_output_${today_date}_list_${digits_in_name}.log" 

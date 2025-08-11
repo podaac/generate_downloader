@@ -46,6 +46,7 @@ class generic_downloader_job_manager:
        self.m_output_directory_name_lookup_table['L3_MODIS_A']  = 'MODIS_AQUA_L3_SST_OBPG';
        self.m_output_directory_name_lookup_table['L3_MODIS_T']  = 'MODIS_TERRA_L3_SST_OBPG';
        self.m_output_directory_name_lookup_table['L2_VIIRS']    = 'VIIRS_L2_SST_OBPG';
+       self.m_output_directory_name_lookup_table['L2_JPSS1']    = 'JPSS1_L2_SST_OBPG';
        self.m_output_directory_name_lookup_table['L2_AQUARIUS'] = 'AQUARIUS_L2_OBPG';
        self.m_output_directory_name_lookup_table['L3_AQUARIUS'] = 'AQUARIUS_L3_OBPG';
        self.m_output_directory_name_lookup_table['L4_AQUARIUS'] = 'AQUARIUS_L4_OBPG';
@@ -62,6 +63,7 @@ class generic_downloader_job_manager:
        self.m_crawler_info_lookup_table['MODIS_A']  = "A";
        self.m_crawler_info_lookup_table['MODIS_T']  = "T";
        self.m_crawler_info_lookup_table['VIIRS']    = "V";
+       self.m_crawler_info_lookup_table['JPSS1']    = "V";
        self.m_crawler_info_lookup_table['AQUARIUS'] = "Q";
 
        return(1);
