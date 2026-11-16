@@ -1,20 +1,24 @@
-# Stage 0 - Create from python:3.12-slim-bookworm image
-# FROM python:3.12-slim-bookworm as stage0
+# Base OS Patching & Dependencies
 FROM python:3.12-slim-bookworm
-RUN apt update && apt install -y bash tcsh python3-venv build-essential netcdf-bin procps jq
 
-# Stage 1 - Copy Generate code
-# FROM stage0 as stage1
+# 1. Update, upgrade, install dependencies, and clean cache in one layer
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
+    bash tcsh python3-venv build-essential netcdf-bin procps jq && \
+    rm -rf /var/lib/apt/lists/*
+
+# 2. Copy Generate code
 RUN /bin/mkdir /data
 COPY . /app
 
-# Stage 2 - Install dependencies
-# FROM stage2 as stage3
-RUN /usr/local/bin/python3 -m venv /app/env
-RUN /app/env/bin/pip install -r /app/requirements.txt
+# 3. Install Python dependencies & Purge Build Tools
+RUN /usr/local/bin/python3 -m venv /app/env && \
+    /app/env/bin/pip install --no-cache-dir -r /app/requirements.txt && \
+    apt-get purge -y build-essential && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
 
-# Stage 3 - Execute code
-# FROM stage2 as stage3
 LABEL version="0.1" \
-    description="Containerized Generate: Downloader"
-ENTRYPOINT [ "/bin/tcsh", "/app/shell/startup_generic_downloader_job_index.csh" ] 
+      description="Containerized Generate: Downloader"
+
+ENTRYPOINT [ "/bin/tcsh", "/app/shell/startup_generic_downloader_job_index.csh" ]
